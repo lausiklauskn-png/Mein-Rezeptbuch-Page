@@ -10,6 +10,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mein Rezeptbuch">
 <title>Mein Rezeptbuch · Deine Rezepte, offline & mit KI</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mein Rezeptbuch · Deine Rezepte, offline & mit KI">
+<meta property="og:description" content="Die persönliche Rezept-App: offline, ohne Konto, kostenlos – mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen und Food-Zine-Generator.">
+<meta property="og:image" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/img/zine-ratatouille.jpg">
+<meta property="og:url" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -421,6 +427,23 @@ textarea.inp{resize:vertical;min-height:90px}
 /* reveal on scroll */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
 .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* ---- Demo-Video-Raum ---- */
+.videobox{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lg);
+  aspect-ratio:16/9;cursor:pointer;background:linear-gradient(135deg,var(--br),var(--rust));margin:6px 0;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
+.videobox .vposter{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.videobox::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(20,12,4,.15),rgba(20,12,4,.7))}
+.videobox .vplay{position:absolute;inset:0;z-index:3;display:grid;place-items:center}
+.videobox .vplay span{width:74px;height:74px;border-radius:50%;background:color-mix(in srgb,var(--accent) 88%,#000);color:#fff;
+  display:grid;place-items:center;font-size:28px;padding-left:5px;box-shadow:0 10px 30px rgba(0,0,0,.5),var(--glow);transition:transform .15s}
+.videobox:hover .vplay span{transform:scale(1.12)}
+.videobox .vlabel{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:20px 18px 14px;color:#fff;
+  background:linear-gradient(180deg,transparent,rgba(8,6,2,.72))}
+.videobox .vlabel b{display:block;font-weight:800;font-size:1.05rem}
+.videobox .vlabel small{color:#f0e6d8}
+.videobox video{position:relative;z-index:5;width:100%;height:100%;display:block;object-fit:cover;background:#000}
 
 /* ===== three.js Hintergrund ===== */
 #bg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.5}
@@ -534,6 +557,14 @@ const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
 function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('toasts').appendChild(t);
   setTimeout(()=>{t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(()=>t.remove(),400);},2600);}
 function openApp(){window.open(APP_URL,'_blank','noopener');}
+/* Demo-Video-Raum: spielt assets/demo.mp4, sobald vorhanden – sonst freundlicher Hinweis */
+function playDemo(){
+  const box=$('videoBox');if(!box||box._playing)return;
+  const v=document.createElement('video');v.src='assets/demo.mp4';v.controls=true;v.playsInline=true;v.setAttribute('playsinline','');
+  v.onerror=()=>{toast('Kurzes Demo-Video folgt – hier wird es eingebettet.');};
+  v.oncanplay=()=>{box._playing=true;box.innerHTML='';box.appendChild(v);v.play().catch(()=>{});};
+  v.load();
+}
 
 /* ===== Navigation ===== */
 const NAV=[
@@ -713,6 +744,12 @@ function renderStart(){
     phoneHTML('ui-edit','Rezept bearbeiten','Zutaten, Schritte, Portionen')+
     phoneHTML('ui-planner','Menüplaner','Woche planen + Einkaufsliste')+
   '</div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Sieh die App in Aktion</h2><div class="sub">Kurzes Demo-Video</div></div></div>'+
+  '<div class="videobox reveal" id="videoBox" onclick="playDemo()" data-tip="Demo-Video abspielen">'+
+    '<img class="vposter" src="assets/demo-poster.jpg" alt="Demo · Mein Rezeptbuch" onerror="this.style.display=\'none\'">'+
+    '<div class="vplay"><span>▶</span></div>'+
+    '<div class="vlabel"><b>Mein Rezeptbuch · Demo</b><small>Rezept scannen · Wochenplan · Food-Zine gestalten</small></div>'+
+  '</div>'+
   '<div class="secttitle reveal"><span class="bar"></span><div><h2>Beliebte Funktionen</h2><div class="sub">Tippen für Details</div></div></div>'+
   '<div class="sgrid" id="startGrid"></div>'+
   '<div style="text-align:center;margin:18px 0 4px"><button class="btn sec lg" onclick="goTo(1)">Alle Funktionen ansehen →</button></div>'+
@@ -855,6 +892,10 @@ function renderThemen(){
     phoneHTML('theme-spektral','Spektral','Regenbogen-Kopf')+
     phoneHTML('theme-atelier','Atelier','Kräftig & kreativ')+
     phoneHTML('theme-neon','Neon','Dunkel & leuchtend')+
+  '</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>So wählst du dein Thema</h2><div class="sub">Einstellungen → Thema & Sprache</div></div></div>'+
+  '<div class="phones reveal" style="grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto">'+
+    phoneHTML('ui-settings','Einstellungen','Thema & Sprache mit einem Tipp')+
   '</div>'+
   '<div class="secttitle"><span class="bar"></span><div><h2>8 Sprachen</h2><div class="sub">Ideal für mehrsprachige Familien</div></div></div>'+
   '<div class="langgrid reveal">'+LANGS.map(l=>'<div class="langbtn"><span class="fl">'+l[0]+'</span>'+h(l[1])+'</div>').join('')+'</div>'+

@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7a5840" id="metaTheme">
+<meta name="description" content="Mein Rezeptbuch — die persönliche Rezept-App: offline, ohne Konto, kostenlos. Mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen, Nährwerten und dem KI-Food-Zine-Generator. Als App installierbar auf iPhone, Android & Desktop.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mein Rezeptbuch">
+<title>Mein Rezeptbuch · Deine Rezepte, offline & mit KI</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mein Rezeptbuch · Deine Rezepte, offline & mit KI">
+<meta property="og:description" content="Die persönliche Rezept-App: offline, ohne Konto, kostenlos – mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen und Food-Zine-Generator.">
+<meta property="og:image" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/img/zine-ratatouille.jpg">
+<meta property="og:url" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+<style>
+/* ===================== Mein Rezeptbuch · Landing — Design System ===================== */
+/* Farb-Basis = Palette der echten App (--sand/--parch/--br/--rust/--grn …).
+   Die semantischen Variablen (--accent, --bg, --surface …) werden EINMAL aus der
+   App-Palette abgeleitet; jedes Theme setzt nur die Palette-Zeile neu. */
+:root{
+  /* Palette – Standard „Landhaus" (identisch zur App) */
+  --sand:#f9f4ec;--sand2:#ede5d8;--parch:#fdfaf5;--ink:#302010;
+  --br:#7a5840;--br2:#9e7050;--br3:#c4a07a;--rust:#b85535;--rusts:#f5e4dc;
+  --grn:#4e7040;--grns:#e6f0e0;--teal:#36706a;--teals:#e2f0ee;--gold:#a8841e;--golds:#faf4e0;
+  /* Semantische Ableitung (gilt für ALLE Themes) */
+  --accent:var(--br);--accent-d:var(--br2);--accent2:var(--rust);--accent3:var(--br3);
+  --bg:var(--sand);--surface:var(--parch);--surface-2:var(--sand2);
+  --ink-2:color-mix(in srgb,var(--ink) 60%,var(--bg));
+  --ink-3:color-mix(in srgb,var(--ink) 40%,var(--bg));
+  --line:color-mix(in srgb,var(--ink) 13%,var(--surface));
+  --accent-soft:color-mix(in srgb,var(--accent) 15%,var(--surface));
+  --ok:var(--grn);--ok-soft:var(--grns);--warn:var(--gold);--danger:var(--rust);--danger-soft:var(--rusts);
+  --glow:0 0 26px color-mix(in srgb,var(--accent) 42%,transparent),0 0 60px color-mix(in srgb,var(--accent) 20%,transparent);
+  --radius:16px;--radius-s:10px;--fs:15px;
+  --shadow:0 4px 20px rgba(40,30,16,.10);--shadow-lg:0 12px 40px rgba(40,30,16,.20);
+}
+@property --rot { syntax:'<angle>'; inherits:false; initial-value:0deg; }
+/* ── Themen (nur die Palette-Zeile, alles andere leitet sich ab) ── */
+[data-theme=spring]{--sand:#f4f9f0;--sand2:#d4e8c8;--parch:#f8fdf4;--ink:#162810;--br:#437230;--br2:#5e9448;--br3:#90bc70;--rust:#c05858;--rusts:#fae8e8;--grn:#347028;--grns:#d8f0d0;--teal:#287858;--teals:#d0eee0;--gold:#708020;--golds:#eaf2cc}
+[data-theme=night]{--sand:#181410;--sand2:#2a2018;--parch:#201810;--ink:#ecdcc8;--br:#c8a480;--br2:#a88060;--br3:#b09060;--rust:#e07050;--rusts:#381808;--grn:#68a848;--grns:#182808;--teal:#50a89a;--teals:#0c2420;--gold:#d4a030;--golds:#281e04}
+[data-theme=modern]{--sand:#f3f5fa;--sand2:#d8dfe8;--parch:#ffffff;--ink:#182038;--br:#284880;--br2:#3e70a8;--br3:#88aad0;--rust:#c83858;--rusts:#fce6ea;--grn:#228048;--grns:#d0f0e0;--teal:#187888;--teals:#c8e8ef;--gold:#b87020;--golds:#faf0d8}
+[data-theme=colorful]{--sand:#fef9f0;--sand2:#fad8c0;--parch:#fffbf5;--ink:#280e04;--br:#dc5a18;--br2:#cc7c28;--br3:#e0a058;--rust:#c02858;--rusts:#fce8f0;--grn:#489018;--grns:#dcf4c8;--teal:#1888a0;--teals:#c8eff4;--gold:#dc9e08;--golds:#fef8c8}
+[data-theme=neon]{--sand:#0d0d1a;--sand2:#1c1830;--parch:#12101e;--ink:#e6deff;--br:#9d5cff;--br2:#7a3dd8;--br3:#9a70e8;--rust:#ff3f9a;--rusts:#2a0918;--grn:#00d68f;--grns:#002616;--teal:#00c8f0;--teals:#001a24;--gold:#ffe033;--golds:#1a1602}
+[data-theme=pastel]{--sand:#fff0f9;--sand2:#f0d0ea;--parch:#fff8fe;--ink:#2a1830;--br:#c050c8;--br2:#d878d4;--br3:#d4a8cc;--rust:#ff6090;--rusts:#ffe0eb;--grn:#4ec888;--grns:#d4f2e4;--teal:#38b8cc;--teals:#ccf0f6;--gold:#f5a020;--golds:#fff0d0}
+[data-theme=spektral]{--sand:#f2f0ff;--sand2:#ddd8f8;--parch:#f8f6ff;--ink:#160828;--br:#6600cc;--br2:#8833dd;--br3:#aa66ee;--rust:#cc1144;--rusts:#fde8ee;--grn:#007733;--grns:#d8ffe8;--teal:#006699;--teals:#d0eeff;--gold:#bb7700;--golds:#fff0cc}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:var(--fs);
+  background:var(--bg);color:var(--ink);line-height:1.45;
+  padding-bottom:calc(76px + env(safe-area-inset-bottom));-webkit-text-size-adjust:100%}
+h1,h2,h3,h4{margin:0}
+input,select,textarea,button{font-family:inherit;font-size:1rem;color:inherit}
+a{color:var(--accent)}
+::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:9px}
+
+/* ---- Topbar ---- */
+.topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);padding:max(10px,env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1;cursor:pointer}
+.brand .logo{height:44px;width:auto;flex:none;object-fit:contain;border-radius:10px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.2))}
+.brand .nm{display:flex;flex-direction:column;justify-content:center;min-width:0;line-height:1.06}
+.brand .nm b{font-weight:900;font-size:1.16rem;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .nm b i{font-style:italic;color:var(--accent);font-weight:800}
+.brand .nm small{font-weight:700;font-size:.64rem;letter-spacing:.5px;color:var(--ink-3);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-acts{display:flex;gap:8px}
+.iconbtn{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);width:42px;height:42px;border-radius:12px;
+  font-size:19px;cursor:pointer;display:grid;place-items:center;transition:transform .12s,background .15s;text-decoration:none}
+.iconbtn:hover{background:var(--accent-soft)}
+.iconbtn:active{transform:scale(1.18)}
+
+/* ---- Desktop top-nav ---- */
+.topnav{display:none;gap:4px;flex:2;justify-content:center}
+.topnav button{border:none;background:transparent;color:var(--ink-2);font-weight:800;font-size:.82rem;letter-spacing:.3px;
+  text-transform:uppercase;padding:9px 12px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.topnav button:hover{color:var(--accent)}
+.topnav button.on{background:var(--surface-2);color:var(--accent)}
+@media(min-width:1040px){.topnav{display:flex}.bottomnav{display:none}.brand{flex:1}.tb-acts{flex:1;justify-content:flex-end}
+  body{padding-bottom:20px}.fab{bottom:24px}}
+
+/* ---- Search / filter ---- */
+#searchArea{display:none}
+#searchArea.on{display:block}
+.searchwrap{padding:12px 14px 4px;max-width:1040px;margin:0 auto}
+.searchbox{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);
+  border-radius:13px;padding:0 12px;box-shadow:var(--shadow)}
+.searchbox input{border:none;background:transparent;outline:none;flex:1;padding:12px 2px;font-size:1rem}
+.searchbox .si{font-size:18px;color:var(--ink-3)}
+.filterbar{display:flex;gap:6px;align-items:center;overflow-x:auto;padding:8px 14px 4px;scrollbar-width:none;max-width:1040px;margin:0 auto}
+.filterbar::-webkit-scrollbar{display:none}
+.pill{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;
+  padding:5px 13px;font-size:.78rem;font-weight:700;line-height:1.35;cursor:pointer;transition:transform .12s,all .15s;white-space:nowrap}
+.pill:active{transform:scale(1.08)}
+.pill.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ---- Screens ---- */
+main{padding:8px 14px 28px;max-width:1040px;margin:0 auto}
+.screen{display:none}.screen.on{display:block;animation:fade .28s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.secttitle{display:flex;align-items:center;gap:11px;margin:26px 4px 12px}
+.secttitle .bar{width:6px;align-self:stretch;min-height:26px;border-radius:3px;background:var(--accent)}
+.secttitle h2{font-size:1.5rem;font-weight:900;letter-spacing:-.5px;color:var(--accent)}
+.secttitle .sub{color:var(--ink-2);font-size:.86rem;font-weight:600;margin-top:2px}
+.pagehead{font-size:1.9rem;font-weight:900;letter-spacing:-.8px;color:var(--accent);margin:14px 4px 6px;line-height:1.05}
+.lead{color:var(--ink-2);font-size:1rem;line-height:1.6;margin:8px 4px 4px;max-width:780px}
+.lead b{color:var(--ink)}
+
+/* ---- Hero ---- */
+.hero{position:relative;border-radius:22px;overflow:hidden;margin-top:8px;box-shadow:var(--shadow-lg);
+  border:1px solid var(--line);min-height:340px;display:flex;align-items:flex-end}
+.hero .hph{position:absolute;inset:0;background:linear-gradient(135deg,var(--br),var(--rust) 70%)}
+.hero .hph img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .hscrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,12,4,.10) 0%,rgba(20,12,4,.44) 42%,rgba(20,12,4,.90) 100%)}
+.hero .hcont{position:relative;padding:26px 22px 24px;color:#fff;z-index:2;max-width:700px}
+.hero .htag{display:inline-block;background:var(--accent);color:#fff;font-weight:800;font-size:.72rem;letter-spacing:.5px;
+  text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+.hero h1{font-size:2.1rem;line-height:1.06;font-weight:900;letter-spacing:-1px;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.hero h1 i{font-style:italic;color:#ffe9c0}
+.hero p{margin:12px 0 18px;font-size:1.04rem;line-height:1.5;color:#f4ece0;max-width:560px;text-shadow:0 1px 10px rgba(0,0,0,.5)}
+.hero .hbtns{display:flex;gap:10px;flex-wrap:wrap}
+@media(min-width:640px){.hero{min-height:440px}.hero h1{font-size:2.9rem}}
+
+/* ---- Buttons: Glas-Cabochon ---- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;
+  border-radius:14px;padding:13px 20px;font-size:1rem;cursor:pointer;border:1px solid transparent;overflow:hidden;
+  text-decoration:none;line-height:1.2;color:#fff;
+  transform:perspective(640px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;
+  transition:transform .14s ease,box-shadow .2s ease;
+  box-shadow:inset 0 2px 1px rgba(255,255,255,.5),inset 0 -5px 9px rgba(0,0,0,.42),
+    inset 11px 0 17px rgba(255,255,255,.06),inset -11px 0 19px rgba(0,0,0,.30),
+    inset 0 0 0 1px rgba(255,255,255,.12),0 14px 30px rgba(0,0,0,.26),0 4px 8px rgba(0,0,0,.20)}
+.btn::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:
+    radial-gradient(108px 76px at var(--mx,50%) var(--my,24%),rgba(255,255,255,.7),transparent 56%),
+    linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,0) 46%),
+    linear-gradient(115deg,transparent 26%,color-mix(in srgb,var(--accent3) 62%,transparent) 43%,color-mix(in srgb,var(--accent) 58%,transparent) 51%,color-mix(in srgb,var(--accent2) 62%,transparent) 60%,transparent 76%);
+  background-size:auto,auto,240% 100%;background-position:0 0,0 0,var(--mx,50%) 0;
+  mix-blend-mode:screen;opacity:.45;transition:opacity .22s}
+.btn::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(60% 140% at var(--mx,50%) -10%,rgba(255,255,255,.5),transparent 40%);
+  mix-blend-mode:screen;opacity:0;transition:opacity .22s}
+.btn:hover::before,.btn:focus-visible::before{opacity:1}
+.btn:hover::after,.btn:focus-visible::after{opacity:.85}
+.btn:active{transform:perspective(640px) scale(.98)}
+.btn.pri{background:linear-gradient(135deg,var(--accent),var(--accent2) 70%,color-mix(in srgb,var(--accent2) 55%,#3a0f04));color:#fff}
+.btn.pri:hover{box-shadow:inset 0 2px 1px rgba(255,255,255,.7),inset 0 -5px 9px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.16),0 16px 32px rgba(0,0,0,.4),var(--glow)}
+.btn.sec{background:linear-gradient(180deg,var(--surface),var(--surface-2));color:var(--ink);border:1px solid var(--line)}
+.btn.sec.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:var(--accent)}
+.btn.sec:hover{border-color:var(--accent);box-shadow:inset 0 2px 1px rgba(255,255,255,.4),inset 0 -4px 8px rgba(0,0,0,.14),0 12px 26px rgba(0,0,0,.16),var(--glow)}
+.btn.light{background:linear-gradient(180deg,#ffffff,#f1ece2);color:#302010}
+.btn.ghost{background:linear-gradient(180deg,rgba(140,120,90,.10),rgba(30,20,10,.10));border:1px solid var(--accent);color:var(--accent)}
+.btn.ghost:hover{box-shadow:var(--glow)}
+.btn.block{display:flex;width:100%}
+.btn.lg{padding:15px 22px;font-size:1.05rem}
+@media (prefers-reduced-motion:reduce){.btn{transform:none;transition:none}}
+
+/* ---- Stats ---- */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin:16px 0}
+@media(min-width:560px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 14px;text-align:center;box-shadow:var(--shadow)}
+.stat .n{font-size:1.7rem;font-weight:900;color:var(--accent);line-height:1}
+.stat .l{font-size:.78rem;color:var(--ink-2);font-weight:700;margin-top:6px}
+
+/* ---- Feature cards ---- */
+.sgrid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:560px){.sgrid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.sgrid{grid-template-columns:repeat(3,1fr)}}
+.scard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;
+  transition:transform .15s cubic-bezier(.34,1.4,.64,1),box-shadow .18s}
+.scard:hover{box-shadow:var(--shadow-lg)}
+.scard .ph{position:relative;aspect-ratio:16/10;background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);overflow:hidden;display:grid;place-items:center}
+.scard .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.scard .ph .phi{font-size:52px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));opacity:.95;z-index:1}
+.scard .ph .phtag{position:absolute;left:10px;top:10px;z-index:3;background:rgba(20,12,4,.55);backdrop-filter:blur(3px);
+  color:#fff;font-size:.66rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.scard .sb{padding:13px 14px 15px;flex:1;display:flex;flex-direction:column}
+.scard .sb h3{font-size:1.08rem;font-weight:800;letter-spacing:-.2px}
+.scard .sb p{color:var(--ink-2);font-size:.9rem;margin:6px 0 0;line-height:1.5;flex:1}
+.scard .sb .more{margin-top:10px;color:var(--accent);font-weight:800;font-size:.85rem;display:inline-flex;align-items:center;gap:5px}
+
+/* ---- Food-Gallery ---- */
+.gal{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:760px){.gal{grid-template-columns:repeat(3,1fr)}}
+.galitem{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);
+  background:linear-gradient(135deg,var(--br),var(--rust));display:grid;place-items:center;cursor:pointer;transition:transform .15s}
+.galitem:hover{box-shadow:var(--shadow-lg)}
+.galitem img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2}
+.galitem .gi{font-size:38px;opacity:.85;z-index:1}
+.galitem .cap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:18px 11px 9px;color:#fff;
+  background:linear-gradient(180deg,transparent,rgba(8,6,2,.85));font-size:.78rem;line-height:1.25}
+.galitem .cap b{display:block;font-weight:800;font-size:.86rem}
+
+/* ---- Phone mockups ---- */
+.phones{display:grid;grid-template-columns:1fr;gap:26px;margin:8px 0 6px;justify-items:center}
+@media(min-width:640px){.phones{grid-template-columns:repeat(3,1fr)}}
+.phonewrap{width:100%;max-width:280px}
+.phone{position:relative;width:100%;border-radius:32px;padding:9px;background:linear-gradient(150deg,#33322f,#0c0c0e);
+  box-shadow:var(--shadow-lg),inset 0 0 0 2px rgba(255,255,255,.06);border:1px solid rgba(0,0,0,.35);
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
+.phone .scr{border-radius:25px;overflow:hidden;background:#fff;position:relative;box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.phone .scr img{width:100%;display:block}
+.phone .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:38%;height:16px;background:#0c0c0e;border-radius:0 0 12px 12px;z-index:4}
+.phonecap{text-align:center;font-size:.85rem;color:var(--ink-2);font-weight:700;margin-top:11px}
+.phonecap b{color:var(--ink);display:block;font-size:.92rem}
+
+/* ---- Food-Zine cards ---- */
+.zgrid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:720px){.zgrid{grid-template-columns:1fr 1fr}}
+.zcard{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);
+  background:var(--surface);cursor:pointer;transition:transform .15s,box-shadow .2s}
+.zcard:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.zcard img{width:100%;display:block}
+.zcard .zcap{padding:12px 15px 14px}
+.zcard .zcap b{display:block;font-weight:800;font-size:1rem}
+.zcard .zcap small{color:var(--ink-2);font-size:.85rem}
+.zbadge{position:absolute;left:11px;top:11px;z-index:2;background:var(--accent);color:#fff;font-size:.64rem;font-weight:800;
+  letter-spacing:.4px;text-transform:uppercase;padding:4px 10px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.zwide{grid-column:1/-1}
+
+/* ---- KI-Flow ---- */
+.flow{display:grid;grid-template-columns:1fr;gap:12px;margin:14px 0}
+@media(min-width:720px){.flow{grid-template-columns:1fr auto 1fr auto 1fr;align-items:center}}
+.flowstep{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 16px;text-align:center;box-shadow:var(--shadow)}
+.flowstep .fico{font-size:34px}
+.flowstep h4{font-size:1rem;font-weight:800;margin:8px 0 4px}
+.flowstep p{color:var(--ink-2);font-size:.86rem;line-height:1.5;margin:0}
+.flowstep .fimg{border-radius:12px;overflow:hidden;margin:-4px 0 10px;border:1px solid var(--line)}
+.flowstep .fimg img{width:100%;display:block;aspect-ratio:16/10;object-fit:cover}
+.flowarr{text-align:center;color:var(--accent);font-size:26px;font-weight:900}
+@media(max-width:719px){.flowarr{transform:rotate(90deg)}}
+
+/* ---- Zwei-Spalten Info ---- */
+.cgrid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.cgrid{grid-template-columns:1fr 1fr}}
+.infobox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow)}
+.infobox.bad{border-color:color-mix(in srgb,var(--danger) 40%,var(--line))}
+.infobox.good{border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.infobox h3{font-size:1.05rem;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.infobox p{color:var(--ink-2);line-height:1.6;font-size:.94rem;margin:0}
+
+/* ---- Vergleichstabelle ---- */
+.cmpwrap{overflow-x:auto;margin:6px 0;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow)}
+table.cmp{width:100%;border-collapse:collapse;font-size:.86rem;background:var(--surface);min-width:520px}
+table.cmp thead tr{background:var(--accent);color:#fff}
+table.cmp th{padding:11px 12px;text-align:left;font-weight:800}
+table.cmp td{padding:10px 12px;border-top:1px solid var(--line);color:var(--ink-2)}
+table.cmp td:first-child,table.cmp th:first-child{font-weight:700;color:var(--ink);position:sticky;left:0;background:var(--surface)}
+table.cmp thead th:first-child{background:var(--accent);color:#fff}
+table.cmp .yes{color:var(--ok);font-weight:800}
+table.cmp .no{color:var(--danger)}
+table.cmp .part{color:var(--warn)}
+table.cmp tbody tr:nth-child(even) td{background:var(--surface-2)}
+table.cmp tbody tr:nth-child(even) td:first-child{background:var(--surface-2)}
+
+/* ---- Audience ---- */
+.aud{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:680px){.aud{grid-template-columns:repeat(3,1fr)}}
+.audcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 18px;text-align:center;box-shadow:var(--shadow)}
+.audcard .aico{font-size:38px}
+.audcard h3{font-size:1.06rem;font-weight:800;margin:8px 0 6px}
+.audcard p{color:var(--ink-2);font-size:.9rem;line-height:1.55;margin:0}
+
+/* ---- Section rows / lists ---- */
+.sect{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px;overflow:hidden;box-shadow:var(--shadow)}
+.sect-h{padding:14px 16px 8px;font-weight:800;font-size:.78rem;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-3)}
+.srow{display:flex;align-items:center;gap:12px;padding:14px 16px;border-top:1px solid var(--line);cursor:pointer;transition:background .15s;text-decoration:none;color:inherit}
+.srow:first-of-type{border-top:none}
+.srow:hover{background:var(--surface-2)}.srow.static{cursor:default}.srow.static:hover{background:none}
+.srow .sico{font-size:22px;width:28px;text-align:center;flex:none}
+.srow .sb{flex:1;min-width:0}.srow .sl{font-weight:700}.srow .ss{font-size:.85rem;color:var(--ink-2);margin-top:2px}
+.srow .sarr{color:var(--ink-3)}
+
+/* ---- Chips ---- */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 4px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:.84rem;font-weight:600;color:var(--ink-2);box-shadow:var(--shadow)}
+.chip b{color:var(--accent)}
+
+/* ---- FAQ ---- */
+.faq{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:11px;overflow:hidden;box-shadow:var(--shadow)}
+.faq .q{padding:15px 16px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:12px;font-size:1rem}
+.faq .q .chev{margin-inline-start:auto;color:var(--ink-3);transition:transform .2s;font-size:16px}
+.faq.open .q .chev{transform:rotate(90deg);color:var(--accent)}
+.faq .q .qi{color:var(--accent);font-weight:900}
+.faq .a{max-height:0;overflow:hidden;transition:max-height .3s ease;color:var(--ink-2);line-height:1.6}
+.faq .a .inner{padding:0 16px 15px;font-size:.93rem}
+.faq.open .a{max-height:420px}
+
+/* ---- Forms ---- */
+.fld{margin-bottom:13px}
+.flbl{font-size:.82rem;font-weight:700;color:var(--ink-2);margin-bottom:5px;display:block}
+.inp,select.inp,textarea.inp{width:100%;border:1.5px solid var(--line);background:var(--surface-2);border-radius:11px;
+  padding:11px 13px;outline:none;transition:border-color .15s,background .15s}
+.inp:focus{border-color:var(--accent);background:var(--surface)}
+textarea.inp{resize:vertical;min-height:90px}
+
+/* ---- FAB ---- */
+.fab{position:fixed;bottom:calc(82px + env(safe-area-inset-bottom));inset-inline-end:18px;z-index:25;
+  height:56px;padding:0 20px;border-radius:18px;border:none;background:var(--accent);color:#fff;font-size:1rem;font-weight:800;
+  box-shadow:0 8px 24px -4px var(--accent);cursor:pointer;display:flex;align-items:center;gap:8px;
+  transition:transform .15s cubic-bezier(.34,1.56,.64,1)}
+.fab:active{transform:scale(1.1)}
+.fab .fi{font-size:20px}
+
+/* ---- Bottom nav ---- */
+.bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:30;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(10px);
+  border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));gap:1px}
+.navbtn{flex:1;border:none;background:transparent;padding:7px 1px;border-radius:12px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.6rem;font-weight:700;
+  transition:transform .12s,color .15s}
+.navbtn .ni{font-size:20px;transition:transform .15s}
+.navbtn:active{transform:scale(1.12)}
+.navbtn.on{color:var(--accent)}.navbtn.on .ni{transform:translateY(-1px) scale(1.08)}
+
+/* ---- Sheet / Modal ---- */
+.sh-bg{position:fixed;inset:0;z-index:60;background:rgba(20,14,6,.55);backdrop-filter:blur(3px);
+  display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.sheet{background:var(--surface);width:100%;max-width:680px;max-height:94vh;border-radius:24px 24px 0 0;
+  display:flex;flex-direction:column;animation:slideup .3s cubic-bezier(.16,1,.3,1)}
+@media(min-width:700px){.sh-bg{align-items:center}.sheet{border-radius:24px;max-height:90vh}}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:none}}
+.sh-handle{width:40px;height:4px;background:var(--line);border-radius:99px;margin:9px auto 2px}
+.sh-hdr{display:flex;align-items:center;padding:6px 18px 12px;border-bottom:1px solid var(--line)}
+.sh-title{font-weight:900;font-size:1.16rem;flex:1}
+.sh-x{border:none;background:var(--surface-2);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:16px;color:var(--ink-2);transition:transform .12s}
+.sh-x:active{transform:scale(1.2)}
+.sh-body{overflow-y:auto;padding:16px 18px;flex:1}
+.sh-foot{display:flex;gap:10px;padding:12px 18px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.sh-foot .btn{flex:1}
+.sh-hero{margin:-16px -18px 14px;position:relative;background:linear-gradient(135deg,var(--accent),var(--accent2));overflow:hidden;display:grid;place-items:center}
+.sh-hero img{width:100%;display:block}
+.sh-hero.ph16{aspect-ratio:16/9}
+.sh-hero.ph16 img{position:absolute;inset:0;height:100%;object-fit:cover;z-index:2}
+.sh-hero .phi{font-size:62px;opacity:.92;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
+.sh-body h4{font-size:.9rem;text-transform:uppercase;letter-spacing:.5px;color:var(--ink-3);margin:16px 0 7px}
+.sh-body p{color:var(--ink-2);line-height:1.6;margin:0 0 10px}
+.sh-body p b{color:var(--ink)}
+.taglist{display:flex;flex-wrap:wrap;gap:7px;margin:4px 0}
+.taglist span{background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:5px 11px;font-size:.82rem;font-weight:700}
+
+/* ---- Theme option list ---- */
+.themeopt{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,transform .1s;background:var(--surface-2)}
+.themeopt:active{transform:scale(1.02)}
+.themeopt.on{border-color:var(--accent)}
+.themeopt .sw{width:52px;height:32px;border-radius:9px;flex:none;border:1px solid rgba(0,0,0,.15);display:flex;overflow:hidden}
+.themeopt .sw i{flex:1}
+.themeopt .tl{flex:1}.themeopt .tl b{display:block;font-weight:800}.themeopt .tl small{color:var(--ink-2)}
+.themeopt .ck{color:var(--accent);font-weight:900;opacity:0}
+.themeopt.on .ck{opacity:1}
+/* Theme grid (Themen-Screen) */
+.tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:560px){.tgrid{grid-template-columns:repeat(4,1fr)}}
+.ttile{border:1.5px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;background:var(--surface);text-align:center;transition:border-color .15s,transform .1s;box-shadow:var(--shadow)}
+.ttile:active{transform:scale(1.03)}
+.ttile.on{border-color:var(--accent)}
+.ttile .sw{height:34px;border-radius:8px;overflow:hidden;display:flex;border:1px solid rgba(0,0,0,.12)}
+.ttile .sw i{flex:1}
+.ttile b{display:block;font-size:.84rem;font-weight:800;margin-top:7px}
+.langgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:560px){.langgrid{grid-template-columns:repeat(4,1fr)}}
+.langbtn{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;font-weight:700;box-shadow:var(--shadow)}
+.langbtn .fl{font-size:24px;display:block;margin-bottom:4px}
+
+/* ---- toast ---- */
+#toasts{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom));left:0;right:0;z-index:90;
+  display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.toast{background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-weight:600;font-size:.9rem;
+  box-shadow:var(--shadow-lg);animation:tin .3s;max-width:90%}
+@keyframes tin{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+
+/* ---- install bar ---- */
+#installBar{display:none;align-items:center;gap:10px;background:var(--accent);color:#fff;padding:10px 14px}
+#installBar.on{display:flex}
+#installBar img{height:28px;width:auto;background:#fff;border-radius:6px;padding:2px;flex:none}
+#installBar .ibtxt{flex:1;min-width:0;line-height:1.25;font-size:.9rem;font-weight:600}
+#installBar .ibtn{flex:none;background:#fff;color:var(--accent);border:none;border-radius:9px;padding:8px 15px;font-weight:800;font-size:.86rem;cursor:pointer}
+#installBar .ibtn:active{transform:scale(1.06)}
+#installBar .ibx{flex:none;background:transparent;border:none;color:#fff;font-size:18px;cursor:pointer;opacity:.85;padding:4px}
+
+/* ---- footer ---- */
+.foot{margin:30px 4px 8px;color:var(--ink-3);font-size:.82rem;text-align:center;line-height:1.9}
+.foot a{color:var(--ink-2);text-decoration:none;margin:0 6px;cursor:pointer}
+.foot a:hover{color:var(--accent)}
+.foot .bigbrand{font-weight:900;color:var(--ink-2);font-size:1rem;margin-bottom:4px}
+.foot .bigbrand i{color:var(--accent);font-style:italic}
+
+/* ---- splash ---- */
+#splash{position:fixed;inset:0;z-index:200;display:grid;place-items:center;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 42%,#26201a 0%,#171210 60%,#0c0908 100%);transition:opacity .6s ease}
+#splash.gone{opacity:0;visibility:hidden}
+#spGlow{position:absolute;left:50%;top:46%;width:min(120vw,760px);height:min(120vw,760px);transform:translate(-50%,-50%) scale(.3);
+  background:radial-gradient(circle,rgba(184,85,53,.55),rgba(168,132,30,.22) 40%,transparent 70%);opacity:0;mix-blend-mode:screen}
+#spGlow.grow{animation:sp-gal 2.4s ease forwards}
+@keyframes sp-gal{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}35%{opacity:.9}100%{opacity:.6;transform:translate(-50%,-50%) scale(1.35)}}
+.sp-emblem{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:min(48vw,220px);opacity:0;z-index:2}
+.sp-emblem img{width:100%;height:auto;display:block;border-radius:26px;filter:drop-shadow(0 8px 26px rgba(0,0,0,.6))}
+.sp-emblem.open{animation:sp-emopen 2.4s ease forwards}
+@keyframes sp-emopen{0%{opacity:0;filter:brightness(.3);transform:translate(-50%,-50%) scale(.86)}
+  45%{opacity:1;filter:brightness(1);transform:translate(-50%,-50%) scale(1)}
+  78%{filter:brightness(1.4);transform:translate(-50%,-50%) scale(1.03)}
+  100%{opacity:1;filter:brightness(1);transform:translate(-50%,-50%) scale(1)}}
+.sp-word{position:absolute;left:0;right:0;bottom:24%;text-align:center;color:#fff;z-index:3;opacity:0;transition:opacity .8s ease .3s}
+.sp-word.on{opacity:1}
+.sp-word b{font-size:1.6rem;font-weight:900;letter-spacing:.4px}
+.sp-word b i{font-style:italic;color:#ffcf8f}
+.sp-word small{display:block;color:#c9beb0;font-size:.78rem;letter-spacing:.5px;margin-top:4px;text-transform:uppercase}
+#spFlash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 45%,#fff,rgba(255,255,255,.6) 38%,rgba(255,255,255,0) 72%)}
+#spFlash.go{animation:sp-flash .8s ease}
+@keyframes sp-flash{0%{opacity:0}45%{opacity:.8}100%{opacity:0}}
+.sp-skip{position:fixed;bottom:22px;left:0;right:0;text-align:center;color:rgba(255,255,255,.5);font-size:.78rem;letter-spacing:.05em}
+@media (prefers-reduced-motion:reduce){#spGlow.grow,.sp-emblem.open{animation-duration:.4s}}
+
+/* ---- Tooltip ---- */
+.wf-tip{position:fixed;z-index:9999;max-width:240px;background:#1c1510;color:#fff;font-size:.82rem;line-height:1.35;
+  padding:8px 11px;border-radius:9px;box-shadow:0 8px 22px rgba(0,0,0,.45);border:1px solid var(--accent);
+  pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s,transform .12s}
+.wf-tip.on{opacity:1;transform:translateY(0)}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* ---- Demo-Video-Raum ---- */
+.videobox{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lg);
+  aspect-ratio:16/9;cursor:pointer;background:linear-gradient(135deg,var(--br),var(--rust));margin:6px 0;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
+.videobox .vposter{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.videobox::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(20,12,4,.15),rgba(20,12,4,.7))}
+.videobox .vplay{position:absolute;inset:0;z-index:3;display:grid;place-items:center}
+.videobox .vplay span{width:74px;height:74px;border-radius:50%;background:color-mix(in srgb,var(--accent) 88%,#000);color:#fff;
+  display:grid;place-items:center;font-size:28px;padding-left:5px;box-shadow:0 10px 30px rgba(0,0,0,.5),var(--glow);transition:transform .15s}
+.videobox:hover .vplay span{transform:scale(1.12)}
+.videobox .vlabel{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:20px 18px 14px;color:#fff;
+  background:linear-gradient(180deg,transparent,rgba(8,6,2,.72))}
+.videobox .vlabel b{display:block;font-weight:800;font-size:1.05rem}
+.videobox .vlabel small{color:#f0e6d8}
+.videobox video{position:relative;z-index:5;width:100%;height:100%;display:block;object-fit:cover;background:#000}
+
+/* ===== three.js Hintergrund ===== */
+#bg{position:fixed;inset:0;z-index:-2;pointer-events:none;opacity:.5}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60% 50% at 82% 0%,color-mix(in srgb,var(--accent) 12%,transparent),transparent 60%),
+             radial-gradient(55% 45% at 4% 100%,color-mix(in srgb,var(--accent2) 10%,transparent),transparent 60%)}
+[data-theme=night] #bg,[data-theme=neon] #bg{opacity:.8}
+@keyframes holo-rot{to{--rot:360deg}}
+
+/* ===== Glaskugel-Glanz auf Karten & Bildern ===== */
+.scard,.galitem,.hero,.sh-hero,.stat,.zcard{
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
+.scard .ph::after,.galitem::after,.hero .hph::after,.zcard::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;
+  background:radial-gradient(220px 150px at var(--mx,50%) var(--my,15%),rgba(255,255,255,.38),transparent 60%),
+            linear-gradient(180deg,rgba(255,255,255,.12),transparent 38%);
+  mix-blend-mode:screen;opacity:0;transition:opacity .28s}
+.scard:hover .ph::after,.galitem:hover::after,.hero:hover .hph::after,.zcard:hover::after{opacity:1}
+.scard .ph,.galitem,.hero,.sh-hero{box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),inset 0 2px 1px rgba(255,255,255,.16)}
+
+/* ===== Drag&Drop-Bild-Slots ===== */
+.dropzone{position:relative}
+.dropzone.dragover{outline:3px dashed var(--accent);outline-offset:-5px}
+.dropzone.dragover::before{content:"⬇ Bild hier ablegen";position:absolute;inset:0;z-index:9;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--accent) 40%,transparent);color:#fff;font-weight:900;font-size:.95rem;backdrop-filter:blur(2px);border-radius:inherit}
+.slot-edit{position:absolute;top:8px;right:8px;z-index:8;width:32px;height:32px;border-radius:9px;border:1px solid rgba(255,255,255,.5);
+  background:rgba(20,14,6,.55);backdrop-filter:blur(4px);color:#fff;font-size:15px;cursor:pointer;display:grid;place-items:center;
+  opacity:0;transition:opacity .2s,transform .12s}
+.dropzone:hover .slot-edit{opacity:.9}
+.slot-edit:hover{opacity:1;background:var(--accent)}
+.slot-edit:active{transform:scale(1.15)}
+
+@media(min-width:1040px){body .bottomnav{display:none}body{padding-bottom:24px}.fab{bottom:24px}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<!-- ===== Splash ===== -->
+<div id="splash" onclick="skipSplash()">
+  <div id="spGlow"></div>
+  <div class="sp-emblem" id="spEmblem"><img src="icon-512.png" alt="Mein Rezeptbuch"></div>
+  <div class="sp-word" id="spWord"><b>Mein <i>Rezeptbuch</i></b><small>Offline · ohne Konto · mit KI</small></div>
+  <div id="spFlash"></div>
+  <div class="sp-skip">Tippen zum Überspringen</div>
+</div>
+
+<!-- ===== Topbar ===== -->
+<header class="topbar">
+  <div class="brand" onclick="goTo(0)" data-tip="Zur Startseite">
+    <img class="logo" src="icon-192.png" alt="Mein Rezeptbuch Logo">
+    <span class="nm"><b>Mein <i>Rezeptbuch</i></b><small>Deine Rezepte · offline & mit KI</small></span>
+  </div>
+  <nav class="topnav" id="topnav"></nav>
+  <div class="tb-acts">
+    <button class="iconbtn" onclick="openThemes()" data-tip="Design wechseln – 8 Themen">🎨</button>
+    <button class="iconbtn" onclick="quickDark()" data-tip="Schnell Hell/Dunkel umschalten" id="tbDark">🌙</button>
+    <a class="iconbtn" id="appBtn" href="#" target="_blank" rel="noopener" data-tip="App öffnen / installieren">📲</a>
+  </div>
+</header>
+
+<!-- ===== Install bar ===== -->
+<div id="installBar">
+  <img src="icon-192.png" alt="">
+  <span class="ibtxt">Mein Rezeptbuch auf diesem Gerät installieren</span>
+  <button class="ibtn" onclick="installApp()">Installieren</button>
+  <button class="ibx" onclick="dismissInstall()" title="Ausblenden">✕</button>
+</div>
+
+<!-- ===== Search (nur auf Funktionen) ===== -->
+<div id="searchArea">
+  <div class="searchwrap">
+    <div class="searchbox"><span class="si">🔍</span>
+      <input id="searchInput" oninput="onSearch(this.value)" placeholder="Funktion suchen … z. B. KI, offline, teilen, PDF">
+      <span class="si" style="cursor:pointer;display:none" id="searchX" onclick="clearSearch()">✕</span>
+    </div>
+  </div>
+  <div class="filterbar" id="filterBar"></div>
+</div>
+
+<!-- ===== Screens ===== -->
+<main>
+  <section class="screen on" id="sc-start"></section>
+  <section class="screen" id="sc-funktionen"></section>
+  <section class="screen" id="sc-ki"></section>
+  <section class="screen" id="sc-themen"></section>
+  <section class="screen" id="sc-faq"></section>
+  <section class="screen" id="sc-kontakt"></section>
+</main>
+
+<!-- ===== FAB ===== -->
+<button class="fab" id="fab" onclick="openApp()" data-tip="App öffnen / installieren"><span class="fi">📖</span><span>App öffnen</span></button>
+
+<!-- ===== Bottom nav ===== -->
+<nav class="bottomnav" id="bottomnav"></nav>
+
+<div id="modals"></div>
+<div id="toasts"></div>
+
+<script src="effects.js"></script>
+<script type="module" src="assets/mycel-bg.js"></script>
+<script>
+'use strict';
+/* ===== Konstanten ===== */
+const APP_URL='https://lausiklauskn-png.github.io/Mein-Rezeptbuch/';
+const MAIL='klaus-nitzsche@t-online.de';
+
+/* ===== Helpers ===== */
+const $=id=>document.getElementById(id);
+const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('toasts').appendChild(t);
+  setTimeout(()=>{t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(()=>t.remove(),400);},2600);}
+function openApp(){window.open(APP_URL,'_blank','noopener');}
+/* Demo-Video-Raum: spielt assets/demo.mp4, sobald vorhanden – sonst freundlicher Hinweis */
+function playDemo(){
+  const box=$('videoBox');if(!box||box._playing)return;
+  const v=document.createElement('video');v.src='assets/demo.mp4';v.controls=true;v.playsInline=true;v.setAttribute('playsinline','');
+  v.onerror=()=>{toast('Kurzes Demo-Video folgt – hier wird es eingebettet.');};
+  v.oncanplay=()=>{box._playing=true;box.innerHTML='';box.appendChild(v);v.play().catch(()=>{});};
+  v.load();
+}
+
+/* ===== Navigation ===== */
+const NAV=[
+  {id:'start',ico:'🏠',label:'Start',full:'Start'},
+  {id:'funktionen',ico:'🍳',label:'Funktionen',full:'Funktionen'},
+  {id:'ki',ico:'✨',label:'KI-Zine',full:'KI & Food-Zine'},
+  {id:'themen',ico:'🎨',label:'Themen',full:'Themen & Sprachen'},
+  {id:'faq',ico:'❓',label:'FAQ',full:'FAQ'},
+  {id:'kontakt',ico:'✉️',label:'Kontakt',full:'Kontakt & Impressum'},
+];
+
+/* ===== Feature-Kategorien ===== */
+const CATS=[
+  {key:'alle',label:'Alle'},
+  {key:'offline',label:'🔒 Offline & Datenschutz'},
+  {key:'ki',label:'🤖 KI-Funktionen'},
+  {key:'teilen',label:'📡 Teilen & Planen'},
+  {key:'app',label:'📱 App & Sprachen'},
+];
+
+/* ===== Funktionen (Texte aus „Mein Rezeptbuch") ===== */
+const FEATURES=[
+  {id:'offline',cat:'offline',icon:'🔒',img:'img/soup.jpg',tag:'Datenschutz',
+   title:'Kernfunktionen offline – ohne Cloud',
+   short:'Alle Rezepte bleiben auf deinem Gerät. Lesen, kochen, bearbeiten, planen, teilen – alles ohne Internet.',
+   long:'Alle Rezepte bleiben auf deinem Gerät. Die App funktioniert ohne Internetzugang – im Urlaub, im Keller oder im Flieger. Rezepte lesen, kochen, bearbeiten, Wochenplan und QR-Teilen: alles offline. Nur die KI-Funktionen (Scan, KI-Wochenplan, Food-Zine) brauchen Internet.',
+   feats:['100 % lokal gespeichert','Kein Tracking','Funktioniert offline','Datenschutz by Design']},
+  {id:'kostenlos',cat:'offline',icon:'🆓',tag:'Preis',
+   title:'Dauerhaft kostenlos – kein Abo',
+   short:'Die App ist für immer gratis. Keine Premium-Version, kein Monatsabo, keine Werbung.',
+   long:'Die App selbst ist dauerhaft kostenlos – keine Premium-Version, kein Monatsabo, keine Werbung. KI-Funktionen nutzen deinen eigenen API-Key: du zahlst nur, wenn du KI wirklich benutzt – typisch wenige Cent pro Monat statt 5–8 € Abo bei der Konkurrenz.',
+   feats:['Keine Werbung','Kein Monatsabo','Pay-per-Use KI','Volle Kostenkontrolle']},
+  {id:'konto',cat:'offline',icon:'🚫',tag:'Sofort',
+   title:'Kein Konto nötig',
+   short:'Kein Anmelden, kein Passwort, keine E-Mail. Die App öffnet sich sofort – ohne jede Hürde.',
+   long:'Kein Anmelden, kein Passwort, keine E-Mail-Adresse. Die App öffnet sich sofort – ohne jede Hürde. Ideal auch für ältere Menschen oder technik-skeptische Familienmitglieder.',
+   feats:['Kein Login','Keine E-Mail','Sofort startklar']},
+  {id:'ki-import',cat:'ki',icon:'🤖',img:'img/dumplings.jpg',tag:'KI-Import',
+   title:'KI-Import: Foto, URL, Text & PDF',
+   short:'Rezepte importieren per Foto, Website-URL, rohem Text oder direkt aus einer PDF – die KI strukturiert alles.',
+   long:'Rezepte importieren per Foto (die KI liest Zutaten & Schritte aus dem Bild), per Website-URL, als roher Text oder direkt aus einer PDF-Datei – inklusive eingebetteter Bilder in der PDF. Die KI strukturiert alles automatisch. Kosten: typisch 0,001–0,01 € pro Scan.',
+   feats:['Foto → Rezept','Website-URL','Roher Text','PDF mit Bildern']},
+  {id:'vision',cat:'ki',icon:'🍽️',img:'img/casserole.jpg',tag:'Vision-KI',
+   title:'Rezept aus reinem Bild',
+   short:'Einfach ein fertiges Gericht fotografieren – ohne Text. Die KI erkennt Zutaten und erstellt ein Rezept.',
+   long:'Einfach ein fertig gekochtes Gericht fotografieren – ohne Rezepttext, ohne Beschriftung. Die KI analysiert das Bild, erkennt sichtbare Zutaten, Garmethode und Anrichtstil und erstellt daraus ein vollständiges, strukturiertes Rezept. Möglich durch multimodale Vision-KI.',
+   feats:['Nur-Bild-Import','Zutaten-Erkennung','Garmethode erkannt','Struktur automatisch']},
+  {id:'pdf',cat:'ki',icon:'📄',tag:'PDF',
+   title:'PDF-Import: Text & Bilder',
+   short:'Kochbücher als PDF, gescannte Rezeptkarten, Magazin-PDFs – die App liest Text und Bilder in einem Schritt.',
+   long:'Kochbücher als PDF, gescannte Rezeptkarten, Magazin-PDFs – die App liest beides: Text aus digitalen PDFs wird direkt extrahiert und strukturiert; Bilder innerhalb der PDF werden per KI-Bilderkennung ausgewertet. Ein Schritt, kein separates OCR-Tool nötig.',
+   feats:['Digitale PDFs','Gescannte Seiten','Bilder in der PDF','Kein OCR-Tool nötig']},
+  {id:'zine',cat:'ki',icon:'✨',img:'img/zine-ratatouille.jpg',tag:'KI-Kreativbuch',
+   title:'Food-Zine mit KI',
+   short:'Aus jedem Rezept ein hochwertiges Magazin-Poster, eine Rezeptkarte oder Instagram-Kachel per KI erstellen.',
+   long:'Das KI-Kreativbuch macht aus jedem deiner Rezepte ein gestaltetes Food-Zine: Poster, Zeitungsseite, DIN-A4-Blatt, Instagram-Kachel, Rezeptkarte oder Panorama – wahlweise mit Nährwert-Infografik, Step-by-Step-Diagramm, Einkaufslisten-Block oder Vintage-Look. Die App baut den Prompt, du erzeugst das Bild bei deiner Lieblings-KI und fügst es zurück ein. Ergebnisse wie aus einem Kochmagazin.',
+   feats:['6 Formate','Magazin-Layouts','Vintage/Retro-Stil','Drucken / als PDF']},
+  {id:'wochenplan',cat:'ki',icon:'📅',img:'img/ui-planner.jpg',tag:'Meal-Plan',
+   title:'KI-Wochenplan',
+   short:'Die KI schlägt auf Knopfdruck einen kompletten Wochenplan aus deinen eigenen Rezepten vor.',
+   long:'Die integrierte KI schlägt auf Knopfdruck einen kompletten Wochenplan aus den eigenen Rezepten vor – abgestimmt auf Vorlieben und Verfügbarkeit. Wo andere Apps dafür ein Monatsabo verlangen, zahlst du hier nur den winzigen API-Aufruf.',
+   feats:['Frühstück/Mittag/Abend','Aus eigenen Rezepten','Einkaufsliste','Kein Abo nötig']},
+  {id:'naehrwerte',cat:'ki',icon:'🧮',tag:'Nährwerte',
+   title:'Nährwertberechnung per KI',
+   short:'Die KI schätzt Kalorien, Protein, Kohlenhydrate und Fett für jedes Rezept – direkt integriert.',
+   long:'Die KI schätzt auf Wunsch die Kalorien, Protein, Kohlenhydrate und Fett für jedes Rezept – ohne separate Datenbank-App, direkt integriert. Kosten: Bruchteile eines Cents pro Aufruf.',
+   feats:['Kalorien & Makros','Direkt integriert','Pro Portion','Bruchteile eines Cents']},
+  {id:'sprachpruef',cat:'ki',icon:'✏️',tag:'KI-Text',
+   title:'Rechtschreibung & Übersetzung',
+   short:'Die KI korrigiert Tippfehler in Rezepten und übersetzt sie auf Wunsch – praktisch für internationale Quellen.',
+   long:'Die KI korrigiert Tippfehler in Rezepten und kann Rezepte auf Wunsch direkt übersetzen – praktisch für internationale Quellen. So wird aus einem fremdsprachigen Fund schnell ein sauberes Rezept in deiner Sprache.',
+   feats:['Tippfehler-Korrektur','Rezept übersetzen','Für internationale Quellen']},
+  {id:'qr',cat:'teilen',icon:'📡',tag:'Offline-Teilen',
+   title:'QR-Code teilen – ohne Internet',
+   short:'Rezepte als QR-Code exportieren und auf ein anderes Gerät übertragen – ganz ohne Cloud oder Account.',
+   long:'Rezepte werden als QR-Code exportiert und damit auf ein anderes Gerät übertragen – komplett ohne Internet, ohne Cloud-Sync, ohne gemeinsamen Account. Einfach die Kamera draufhalten und das Rezept ist übertragen.',
+   feats:['QR-Export','Gerät zu Gerät','Ohne Cloud','Ohne Account']},
+  {id:'menue',cat:'teilen',icon:'📆',img:'img/ui-folders.jpg',tag:'Ordnung',
+   title:'Ordner, Menüplaner & Einkaufsliste',
+   short:'Rezepte in eigenen Ordnern sortieren, Menüs planen und die Einkaufsliste automatisch erzeugen lassen.',
+   long:'Sortiere deine Rezepte in eigene Ordner (Vorspeisen, Suppen, Fleisch, Desserts, Cocktails …), plane Menüs für die Woche und lass dir die passende Einkaufsliste automatisch zusammenstellen. Alles übersichtlich und offline.',
+   feats:['Eigene Ordner','Menüplaner','Auto-Einkaufsliste','Portionen umrechnen']},
+  {id:'pwa',cat:'app',icon:'📱',tag:'PWA',
+   title:'Echte App – ohne App Store',
+   short:'Als Progressive Web App auf dem Homescreen installierbar – iPhone, iPad, Android, Mac und Desktop-PC.',
+   long:'Als Progressive Web App (PWA) lässt sich Mein Rezeptbuch auf dem Homescreen installieren – auf iPhone, iPad, Android, Mac und Desktop-PC. Kein App-Store-Download, keine Registrierung, sofort bereit. Updates kommen automatisch im Hintergrund.',
+   feats:['iOS · Android · Desktop','Kein App-Store nötig','Automatische Updates','Offline nach dem 1. Start']},
+  {id:'sprachen',cat:'app',icon:'🌍',tag:'Mehrsprachig',
+   title:'8 Sprachen',
+   short:'Die Oberfläche gibt es in Deutsch, Englisch, Russisch, Chinesisch, Spanisch, Französisch, Italienisch und Portugiesisch.',
+   long:'Die Oberfläche ist in Deutsch, Englisch, Russisch, Chinesisch, Spanisch, Französisch, Italienisch und Portugiesisch verfügbar – ideal für mehrsprachige Familien. Umschalten mit einem Tipp.',
+   feats:['8 Sprachen','Ein-Tipp-Umschaltung','Für mehrsprachige Familien']},
+  {id:'themen',cat:'app',icon:'🎨',img:'img/theme-spektral.jpg',tag:'Design',
+   title:'Viele Themen',
+   short:'Von Landhaus über Nacht bis Spektral – wähle das Design, das dir gefällt. Auch auf dieser Seite.',
+   long:'Mein Rezeptbuch bringt viele Farbwelten mit – warm wie „Landhaus", ruhig wie „Nacht", frisch wie „Frühling" oder verspielt wie „Spektral" und „Neon". Diese Landingpage kann dieselben Themen: probiere sie oben über das 🎨-Symbol aus.',
+   feats:['8+ Farbwelten','Hell & Dunkel','Hoher Kontrast','Auch hier wählbar']},
+  {id:'backup',cat:'offline',icon:'💾',tag:'Sicherung',
+   title:'Backup-Tresor',
+   short:'Mehrere Backup-Dateien lokal verwalten. Sichern und Wiederherstellen mit einem Klick – ohne Cloud.',
+   long:'Mehrere Backup-Dateien werden lokal verwaltet. Sicherung und Wiederherstellung erfolgen mit einem Klick – keine Cloud, kein Google Drive nötig. Export als E-Book, Blätterbuch oder JSON ist ebenfalls möglich.',
+   feats:['Mehrere Sicherungen','1-Klick-Wiederherstellung','Export E-Book/JSON','Ohne Cloud']},
+  {id:'undo',cat:'offline',icon:'↩️',tag:'Komfort',
+   title:'Rückgängig (bis 10 Schritte)',
+   short:'Beim Bearbeiten eines Rezepts lassen sich bis zu 10 Schritte rückgängig machen – kein versehentliches Löschen.',
+   long:'Beim Bearbeiten eines Rezepts können bis zu 10 Schritte rückgängig gemacht werden. Kein versehentliches Löschen von Zutaten oder Schritten mehr – einfach zurück.',
+   feats:['Bis 10 Schritte','Strg+Z','Schützt vor Fehlern']},
+  {id:'druck',cat:'teilen',icon:'🖨️',img:'img/ratatouille.jpg',tag:'Drucken',
+   title:'Drucken / als PDF',
+   short:'Jedes Rezept sauber als PDF speichern oder ausdrucken – mit Zutatenliste, Zubereitung und Bild.',
+   long:'Jedes Rezept lässt sich sauber layouten und als PDF speichern oder ausdrucken – mit Zutatenliste, Zubereitung und Foto. Praktisch für die Rezeptmappe in der Küche oder zum Weitergeben.',
+   feats:['Sauberes PDF-Layout','Mit Foto & Zutaten','A4-Druck','Zum Weitergeben']},
+];
+
+/* ===== Food-Zines (KI-Kreativbuch) ===== */
+const ZINES=[
+  {img:'img/zine-ratatouille.jpg',tag:'Poster',wide:true,t:'Ratatouille · Poster',s:'Querformat-Poster im Provence-Stil – mit Foto, Badges und Kurzbeschreibung.'},
+  {img:'img/zine-bolognese.jpg',tag:'Zeitungsseite',wide:true,t:'Bolognese · Illustrierte Magazinseite',s:'Schritt-für-Schritt-Diagramme, Nährwerte, „Auf einen Blick" und Kultur & Geschichte.'},
+  {img:'img/zine-gyoza.jpg',tag:'Magazin-Doppelseite',t:'Gyoza · Food & Genuss',s:'Zwei-Seiten-Layout wie im Kochmagazin: Zutaten, Zubereitung mit Fotos, Nährwerte.'},
+  {img:'img/zine-wuerzfleisch.jpg',tag:'Rezeptkarte',t:'Würzfleisch · Rezeptkarte',s:'Handgezeichneter Vintage-Look mit illustrierten Zutaten und Step-Diagrammen.'},
+];
+
+/* ===== Themen ===== */
+const THEMES=[
+  {key:'default',name:'Landhaus',desc:'Warm & gemütlich',sw:['#f9f4ec','#7a5840','#b85535','#4e7040']},
+  {key:'spring',name:'Frühling',desc:'Frisch & grün',sw:['#f4f9f0','#437230','#c05858','#287858']},
+  {key:'night',name:'Nacht',desc:'Augenschonend dunkel',sw:['#181410','#c8a480','#e07050','#68a848']},
+  {key:'modern',name:'Modern',desc:'Klar & blau',sw:['#f3f5fa','#284880','#c83858','#228048']},
+  {key:'colorful',name:'Bunt',desc:'Kräftig & warm',sw:['#fef9f0','#dc5a18','#c02858','#489018']},
+  {key:'neon',name:'Neon',desc:'Dunkel & leuchtend',sw:['#0d0d1a','#9d5cff','#ff3f9a','#00d68f']},
+  {key:'pastel',name:'Pastell',desc:'Zart & rosa',sw:['#fff0f9','#c050c8','#ff6090','#4ec888']},
+  {key:'spektral',name:'Spektral',desc:'Regenbogen',sw:['#FF0000','#FFE500','#00CC00','#8800FF']},
+];
+const THEME_META={default:'#7a5840',spring:'#437230',night:'#181410',modern:'#284880',colorful:'#dc5a18',neon:'#0d0d1a',pastel:'#c050c8',spektral:'#8800cc'};
+
+const LANGS=[['🇩🇪','Deutsch'],['🇬🇧','English'],['🇷🇺','Русский'],['🇨🇳','中文'],['🇪🇸','Español'],['🇫🇷','Français'],['🇮🇹','Italiano'],['🇵🇹','Português']];
+
+const FAQS=[
+  {q:'Ist die App wirklich kostenlos?',a:'Ja. Mein Rezeptbuch ist dauerhaft kostenlos – keine Premium-Version, kein Monatsabo, keine Werbung. Nur die KI-Funktionen laufen über deinen eigenen API-Key und kosten dort typisch wenige Cent pro Monat.'},
+  {q:'Brauche ich ein Konto oder eine Anmeldung?',a:'Nein. Kein Login, kein Passwort, keine E-Mail-Adresse. Die App öffnet sich sofort. Alle Rezepte bleiben lokal auf deinem Gerät.'},
+  {q:'Funktioniert die App offline?',a:'Die Kernfunktionen ja: Rezepte lesen, kochen, bearbeiten, Wochenplan und QR-Teilen laufen komplett ohne Internet. Nur die KI-Funktionen (Foto-Scan, KI-Wochenplan, Food-Zine, Nährwerte) brauchen eine Verbindung.'},
+  {q:'Wie funktioniert der KI-Import?',a:'Du gibst ein Rezept als Foto, Website-URL, Text oder PDF hinein – die KI erkennt Zutaten und Schritte und legt daraus ein sauber strukturiertes Rezept an. Sogar aus einem reinen Foto eines fertigen Gerichts (ohne Text) erstellt die Vision-KI ein Rezept.'},
+  {q:'Was ist das Food-Zine?',a:'Das KI-Kreativbuch macht aus jedem Rezept ein gestaltetes Magazin: Poster, Zeitungsseite, Instagram-Kachel, Rezeptkarte und mehr – wahlweise mit Nährwert-Infografik, Step-Diagramm oder Vintage-Look. Ideal zum Ausdrucken, Verschenken oder Teilen.'},
+  {q:'Was kostet die KI und wie wird abgerechnet?',a:'Du hinterlegst einmalig deinen eigenen API-Key. Du zahlst nur, wenn du KI nutzt – ein Foto-Scan kostet typisch 0,001–0,01 €. Wer 5× pro Monat scannt, zahlt etwa 2–5 Cent im Monat. Volle Kostenkontrolle, kein Abo.'},
+  {q:'Auf welchen Geräten läuft die App?',a:'Als Progressive Web App auf iPhone, iPad, Android, Mac und Desktop-PC. Über das Browser-Menü „Zum Startbildschirm hinzufügen" landet sie wie eine echte App auf dem Homescreen – ganz ohne App Store.'},
+  {q:'In welchen Sprachen gibt es die App?',a:'In acht Sprachen: Deutsch, Englisch, Russisch, Chinesisch, Spanisch, Französisch, Italienisch und Portugiesisch – ideal für mehrsprachige Familien.'},
+];
+
+/* ===== Render: Start ===== */
+function renderStart(){
+  const s=$('sc-start');
+  s.innerHTML=
+  '<div class="hero reveal">'+
+    '<div class="hph" data-slot="hero"><img src="img/dumplings.jpg" alt="" onerror="this.style.display=\'none\'"></div>'+
+    '<div class="hscrim"></div>'+
+    '<div class="hcont">'+
+      '<span class="htag">Deine Rezepte · offline & mit KI</span>'+
+      '<h1>Mein <i>Rezeptbuch</i></h1>'+
+      '<p>Die persönliche Rezept-App: alles läuft lokal auf deinem Gerät – <b>ohne Konto, ohne Cloud, ohne Werbung</b>. Und trotzdem mit moderner KI: Rezepte per Foto scannen, Wochenplan erstellen, Food-Zines gestalten.</p>'+
+      '<div class="hbtns">'+
+        '<button class="btn pri lg" onclick="openApp()">📖 App öffnen</button>'+
+        '<button class="btn light lg" onclick="goTo(2)">✨ KI & Food-Zine ansehen</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="stats reveal">'+
+    '<div class="stat"><div class="n">0 €</div><div class="l">App – kein Abo</div></div>'+
+    '<div class="stat"><div class="n">100 %</div><div class="l">auf deinem Gerät</div></div>'+
+    '<div class="stat"><div class="n">4</div><div class="l">KI-Import-Wege</div></div>'+
+    '<div class="stat"><div class="n">8</div><div class="l">Sprachen</div></div>'+
+  '</div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Was ist Mein Rezeptbuch?</h2></div></div>'+
+  '<p class="lead reveal">Die meisten Rezept-Apps speichern deine Daten in der Cloud, verlangen eine Registrierung, zeigen Werbung oder ein Monatsabo, sobald KI dazukommt. <b>Mein Rezeptbuch macht das anders:</b> alles läuft lokal auf deinem Gerät – kein Konto, keine Werbung, kein App-Abo – und trotzdem mit modernen KI-Funktionen. KI-Scans kosten nur Bruchteile eines Cents pro Nutzung, über deinen eigenen API-Key. Das ist die Kombination, die es so noch nicht gibt.</p>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Ein Blick in die App</h2><div class="sub">Echte Screens aus Mein Rezeptbuch</div></div></div>'+
+  '<div class="phones reveal">'+
+    phoneHTML('ui-folders','Ordner & Kategorien','47 Rezepte, sauber sortiert')+
+    phoneHTML('ui-edit','Rezept bearbeiten','Zutaten, Schritte, Portionen')+
+    phoneHTML('ui-planner','Menüplaner','Woche planen + Einkaufsliste')+
+  '</div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Sieh die App in Aktion</h2><div class="sub">Kurzes Demo-Video</div></div></div>'+
+  '<div class="videobox reveal" id="videoBox" onclick="playDemo()" data-tip="Demo-Video abspielen">'+
+    '<img class="vposter" src="assets/demo-poster.jpg" alt="Demo · Mein Rezeptbuch" onerror="this.style.display=\'none\'">'+
+    '<div class="vplay"><span>▶</span></div>'+
+    '<div class="vlabel"><b>Mein Rezeptbuch · Demo</b><small>Rezept scannen · Wochenplan · Food-Zine gestalten</small></div>'+
+  '</div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Beliebte Funktionen</h2><div class="sub">Tippen für Details</div></div></div>'+
+  '<div class="sgrid" id="startGrid"></div>'+
+  '<div style="text-align:center;margin:18px 0 4px"><button class="btn sec lg" onclick="goTo(1)">Alle Funktionen ansehen →</button></div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Für wen ist die App gemacht?</h2></div></div>'+
+  audienceHTML()+
+  '<div style="text-align:center;margin:20px 0 4px"><button class="btn pri lg" onclick="openApp()">📖 Jetzt kostenlos öffnen</button></div>'+
+  footerHTML();
+  $('startGrid').innerHTML=[FEATURES[0],FEATURES[3],FEATURES[6]].map(cardHTML).join('');
+  hookReveal();
+}
+function audienceHTML(){
+  const A=[
+    ['👩‍👧‍👦','Familien','Rezepte von Oma, Mama und eigene Experimente – alles an einem Ort, geteilt per QR-Code.'],
+    ['🔐','Datenschutz-Bewusste','Keine Daten in der Cloud, kein Tracking, kein Account – alles bleibt auf dem eigenen Gerät.'],
+    ['👴','Einsteiger & Senioren','Sofort nutzbar ohne Anmeldung, einfache Bedienung, auch offline zuverlässig.'],
+  ];
+  return '<div class="aud reveal">'+A.map(a=>'<div class="audcard"><span class="aico">'+a[0]+'</span><h3>'+h(a[1])+'</h3><p>'+h(a[2])+'</p></div>').join('')+'</div>';
+}
+function phoneHTML(img,title,sub){
+  return '<div class="phonewrap reveal"><div class="phone"><div class="notch"></div><div class="scr" data-slot="'+h(img)+'">'+
+    '<img src="img/'+h(img)+'.jpg" alt="'+h(title)+'" loading="lazy" onerror="this.style.display=\'none\'"></div></div>'+
+    '<div class="phonecap"><b>'+h(title)+'</b>'+h(sub)+'</div></div>';
+}
+function cardHTML(sv){
+  return '<div class="scard reveal" onclick="openFeature(\''+sv.id+'\')">'+
+    '<div class="ph" data-slot="fe-'+sv.id+'">'+(sv.img?'<img src="'+h(sv.img)+'" alt="" loading="lazy" onerror="this.style.display=\'none\'">':'')+
+      '<span class="phtag">'+h(sv.tag)+'</span><span class="phi">'+sv.icon+'</span></div>'+
+    '<div class="sb"><h3>'+h(sv.title)+'</h3><p>'+h(sv.short)+'</p>'+
+      '<span class="more">Mehr erfahren →</span></div>'+
+  '</div>';
+}
+
+/* ===== Render: Funktionen ===== */
+let curFilter='alle', curSearch='';
+function renderFunktionen(){
+  const s=$('sc-funktionen');
+  s.innerHTML=
+  '<h1 class="pagehead">Alle Funktionen</h1>'+
+  '<p class="lead">Alles, was Mein Rezeptbuch kann – von offline & datenschutzfreundlich über die KI-Werkzeuge bis zum Teilen und Planen. <b>Tippe eine Karte für Details.</b></p>'+
+  '<div class="sgrid" id="funkGrid" style="margin-top:14px"></div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>So sehen Rezepte aus</h2><div class="sub">Bilder aus der App – Fotos & KI-generiert</div></div></div>'+
+  galleryHTML()+
+  footerHTML();
+  renderFilterBar();applyFunk();
+}
+function galleryHTML(){
+  const G=[
+    ['img/dumplings.jpg','Gyoza','Japanische Teigtaschen'],
+    ['img/casserole.jpg','Hühnerfrikassee','mit Käse überbacken'],
+    ['img/soup.jpg','Bärlauchsuppe','ganz einfach'],
+    ['img/pizzatoast.jpg','Pizza-Toast','schnell & knusprig'],
+    ['img/cocktail.jpg','Amaretto Fizz','Cocktail'],
+    ['img/smoothie.jpg','Fruit Shake','Smoothies & Shakes'],
+  ];
+  return '<div class="gal">'+G.map((g,i)=>'<div class="galitem" data-slot="gal-'+i+'" onclick="openImg(\''+h(g[0])+'\',\''+h(g[1])+'\',\''+h(g[2])+'\')">'+
+    '<img src="'+h(g[0])+'" alt="'+h(g[1])+'" loading="lazy" onerror="this.style.display=\'none\'">'+
+    '<span class="gi">🍽️</span><span class="cap"><b>'+h(g[1])+'</b>'+h(g[2])+'</span></div>').join('')+'</div>';
+}
+function renderFilterBar(){
+  $('filterBar').innerHTML=CATS.map(c=>'<button class="pill'+(c.key===curFilter?' on':'')+'" onclick="setFilter(\''+c.key+'\')">'+h(c.label)+'</button>').join('');
+}
+function setFilter(k){curFilter=k;renderFilterBar();applyFunk();}
+function onSearch(v){curSearch=v.toLowerCase().trim();$('searchX').style.display=v?'block':'none';applyFunk();}
+function clearSearch(){$('searchInput').value='';curSearch='';$('searchX').style.display='none';applyFunk();}
+function applyFunk(){
+  const g=$('funkGrid');if(!g)return;
+  let list=FEATURES.filter(sv=>curFilter==='alle'||sv.cat===curFilter);
+  if(curSearch){list=list.filter(sv=>(sv.title+' '+sv.short+' '+sv.long+' '+sv.feats.join(' ')).toLowerCase().includes(curSearch));}
+  g.innerHTML=list.length?list.map(cardHTML).join(''):'<div style="grid-column:1/-1;text-align:center;color:var(--ink-3);padding:40px"><div style="font-size:48px">🔍</div>Keine Funktion gefunden.</div>';
+  if(window.RBImg)RBImg.apply(g);
+  hookReveal();
+}
+
+/* ===== Render: KI & Food-Zine ===== */
+function renderKi(){
+  const s=$('sc-ki');
+  s.innerHTML=
+  '<h1 class="pagehead">KI & Food-Zine</h1>'+
+  '<p class="lead">Der besondere Dreh von Mein Rezeptbuch: <b>moderne KI ohne Monatsabo</b>. Du nutzt deinen eigenen API-Key und zahlst nur Bruchteile eines Cents – für Rezept-Scan, Wochenplan, Nährwerte und den Food-Zine-Generator.</p>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Vom Foto zum fertigen Rezept</h2></div></div>'+
+  '<div class="flow reveal">'+
+    '<div class="flowstep"><div class="fimg" data-slot="flow-in"><img src="img/dumplings.jpg" alt="" loading="lazy"></div><div class="fico">📸</div><h4>1 · Foto rein</h4><p>Ein Bild von Gericht, Kochbuch, Website oder PDF – oder einfach Text.</p></div>'+
+    '<div class="flowarr">→</div>'+
+    '<div class="flowstep"><div class="fico">🤖</div><h4>2 · KI erkennt alles</h4><p>Die KI liest Zutaten, Mengen und Schritte heraus und strukturiert sie automatisch.</p></div>'+
+    '<div class="flowarr">→</div>'+
+    '<div class="flowstep"><div class="fico">📖</div><h4>3 · Fertiges Rezept</h4><p>Sauber im Buch – bearbeitbar, planbar, teilbar. Kosten: rund 0,001–0,01 € pro Scan.</p></div>'+
+  '</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Food-Zine – aus Rezept wird Magazin</h2><div class="sub">Vom KI-Kreativbuch erzeugt · zum Drucken, Verschenken & Teilen</div></div></div>'+
+  '<p class="lead">Wähle ein Rezept und ein Format – Poster, Zeitungsseite, DIN&nbsp;A4, Instagram, Rezeptkarte oder Panorama. Optional mit Nährwert-Infografik, Step-Diagramm, Einkaufsliste oder Vintage-Look. Diese vier Beispiele sind komplett von der KI gestaltet:</p>'+
+  '<div class="zgrid reveal">'+ZINES.map((z,i)=>zineHTML(z,i)).join('')+'</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Wie funktionieren die KI-Kosten?</h2></div></div>'+
+  '<div class="cgrid reveal">'+
+    '<div class="infobox bad"><h3>❌ So machen es andere Apps</h3><p>KI-Funktionen sind hinter einem Monatsabo gesperrt (z.&nbsp;B. 4–8 € / Monat = bis zu 96 € / Jahr) – egal ob du sie viel oder selten nutzt. Wer nicht zahlt, bekommt keine KI.</p></div>'+
+    '<div class="infobox good"><h3>✅ So funktioniert es hier</h3><p>Du hinterlegst einmalig deinen eigenen API-Key (kostenlos anzulegen). Du zahlst nur, wenn du KI nutzt – ein Foto-Scan kostet typisch 0,001–0,01 €. Wer 5× im Monat scannt, zahlt etwa 2–5 Cent. Volle Kostenkontrolle, kein Abo.</p></div>'+
+  '</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Vergleich mit bekannten Apps</h2></div></div>'+
+  compareHTML()+
+  '<div style="text-align:center;margin:20px 0 4px"><button class="btn pri lg" onclick="openApp()">📖 App mit KI ausprobieren</button></div>'+
+  footerHTML();
+  hookReveal();
+}
+function zineHTML(z,i){
+  return '<div class="zcard reveal'+(z.wide?' zwide':'')+'" data-slot="zine-'+i+'" onclick="openImg(\''+h(z.img)+'\',\''+h(z.t)+'\',\''+h(z.s)+'\')">'+
+    '<span class="zbadge">'+h(z.tag)+'</span>'+
+    '<img src="'+h(z.img)+'" alt="'+h(z.t)+'" loading="lazy" onerror="this.style.display=\'none\'">'+
+    '<div class="zcap"><b>'+h(z.t)+'</b><small>'+h(z.s)+'</small></div></div>';
+}
+function compareHTML(){
+  const rows=[
+    ['App kostenlos','✓ Ja, immer','Einmalig ~5 €','Basis','✓ Ja'],
+    ['KI ohne Monatsabo','✓ Pay-per-Use','✗ keine KI','✗ Abo ~6 €','~ begrenzt'],
+    ['Kein Konto nötig','✓ Ja','~ optional','✗ Pflicht','✗ Konto'],
+    ['Offline (Kernfunktionen)','✓ Ja','~ teilweise','✗ Cloud','✗ Cloud'],
+    ['KI-Import per Foto','✓ Ja','✗ Nein','✗ Nein','~ begrenzt'],
+    ['Rezept aus reinem Bild','✓ Ja','✗ Nein','✗ Nein','✗ Nein'],
+    ['PDF-Import (Text & Bilder)','✓ Ja','✗ Nein','✗ Nein','✗ Nein'],
+    ['Food-Zine / Magazin-KI','✓ Ja','✗ Nein','✗ Nein','✗ Nein'],
+    ['KI-Wochenplan','✓ Ja','✗ Nein','✓ (Abo)','~ begrenzt'],
+    ['QR-Teilen (offline)','✓ Ja','✗ Nein','✗ Nein','✗ Nein'],
+    ['PWA (kein App Store)','✓ Ja','✗ Store','✗ Store','✗ Store'],
+    ['Mehrsprachig','✓ 8 Sprachen','2–3','2–3','einige'],
+  ];
+  const cls=v=>v.startsWith('✓')?'yes':v.startsWith('✗')?'no':v.startsWith('~')?'part':'';
+  return '<div class="cmpwrap reveal"><table class="cmp"><thead><tr><th>Funktion</th><th>Mein Rezeptbuch</th><th>App A</th><th>App B</th><th>App C</th></tr></thead><tbody>'+
+    rows.map(r=>'<tr><td>'+h(r[0])+'</td>'+r.slice(1).map(v=>'<td class="'+cls(v)+'">'+h(v)+'</td>').join('')+'</tr>').join('')+
+    '</tbody></table></div><p style="color:var(--ink-3);font-size:.78rem;margin:8px 4px">App A/B/C stehen stellvertretend für bekannte kommerzielle Rezept-Apps. Angaben ohne Gewähr.</p>';
+}
+
+/* ===== Render: Themen & Sprachen ===== */
+function renderThemen(){
+  const s=$('sc-themen');
+  const cur=document.documentElement.getAttribute('data-theme');
+  s.innerHTML=
+  '<h1 class="pagehead">Themen & Sprachen</h1>'+
+  '<p class="lead">Mein Rezeptbuch bringt viele Farbwelten mit – und <b>diese Seite kann sie auch</b>. Tippe ein Thema, um die ganze Landingpage umzufärben.</p>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Farbwelten</h2><div class="sub">Tippen zum Wechseln</div></div></div>'+
+  '<div class="tgrid" id="themeGrid"></div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Dieselben Themen in der App</h2></div></div>'+
+  '<div class="phones reveal">'+
+    phoneHTML('theme-spektral','Spektral','Regenbogen-Kopf')+
+    phoneHTML('theme-atelier','Atelier','Kräftig & kreativ')+
+    phoneHTML('theme-neon','Neon','Dunkel & leuchtend')+
+  '</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>So wählst du dein Thema</h2><div class="sub">Einstellungen → Thema & Sprache</div></div></div>'+
+  '<div class="phones reveal" style="grid-template-columns:1fr;max-width:300px;margin-left:auto;margin-right:auto">'+
+    phoneHTML('ui-settings','Einstellungen','Thema & Sprache mit einem Tipp')+
+  '</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>8 Sprachen</h2><div class="sub">Ideal für mehrsprachige Familien</div></div></div>'+
+  '<div class="langgrid reveal">'+LANGS.map(l=>'<div class="langbtn"><span class="fl">'+l[0]+'</span>'+h(l[1])+'</div>').join('')+'</div>'+
+  '<div style="text-align:center;margin:22px 0 4px"><button class="btn pri lg" onclick="openApp()">📖 In der App ausprobieren</button></div>'+
+  footerHTML();
+  renderThemeGrid();
+  if(window.RBImg)RBImg.apply(s);
+  hookReveal();
+}
+function renderThemeGrid(){
+  const g=$('themeGrid');if(!g)return;
+  const cur=document.documentElement.getAttribute('data-theme');
+  g.innerHTML=THEMES.map(t=>'<div class="ttile'+(t.key===cur?' on':'')+'" onclick="applyTheme(\''+t.key+'\');renderThemeGrid()">'+
+    '<span class="sw">'+t.sw.map(c=>'<i style="background:'+c+'"></i>').join('')+'</span><b>'+h(t.name)+'</b></div>').join('');
+}
+
+/* ===== Render: FAQ ===== */
+function renderFaq(){
+  const s=$('sc-faq');
+  s.innerHTML=
+  '<h1 class="pagehead">Häufige Fragen</h1>'+
+  '<p class="lead">Antworten rund um Mein Rezeptbuch, die KI-Funktionen und den Datenschutz.</p>'+
+  '<div style="margin-top:14px">'+
+  FAQS.map((f,i)=>'<div class="faq reveal" id="faq'+i+'"><div class="q" onclick="toggleFaq('+i+')"><span class="qi">?</span><span>'+h(f.q)+'</span><span class="chev">›</span></div><div class="a"><div class="inner">'+h(f.a)+'</div></div></div>').join('')+
+  '</div>'+
+  '<div class="sect reveal" style="margin-top:18px"><div class="sect-h">Noch Fragen?</div>'+
+    '<a class="srow" href="'+APP_URL+'" target="_blank" rel="noopener"><span class="sico">📖</span><div class="sb"><div class="sl">App öffnen</div><div class="ss">Direkt ausprobieren</div></div><span class="sarr">›</span></a>'+
+    '<a class="srow" href="mailto:'+MAIL+'"><span class="sico">✉️</span><div class="sb"><div class="sl">E-Mail schreiben</div><div class="ss">'+MAIL+'</div></div><span class="sarr">›</span></a>'+
+  '</div>'+
+  footerHTML();
+  hookReveal();
+}
+function toggleFaq(i){$('faq'+i).classList.toggle('open');}
+
+/* ===== Render: Kontakt ===== */
+function renderKontakt(){
+  const s=$('sc-kontakt');
+  s.innerHTML=
+  '<h1 class="pagehead">App holen & Kontakt</h1>'+
+  '<p class="lead">Mein Rezeptbuch läuft direkt im Browser und lässt sich als App auf dem Homescreen installieren – kostenlos, ohne App Store.</p>'+
+  '<div class="cgrid" style="margin-top:14px">'+
+    '<div class="sect reveal"><div class="sect-h">App installieren</div>'+
+      '<a class="srow" href="'+APP_URL+'" target="_blank" rel="noopener"><span class="sico">📖</span><div class="sb"><div class="sl">App öffnen</div><div class="ss">Im Browser starten</div></div><span class="sarr">›</span></a>'+
+      '<div class="srow" onclick="installApp()"><span class="sico">📲</span><div class="sb"><div class="sl">Auf dem Gerät installieren</div><div class="ss">„Zum Startbildschirm hinzufügen"</div></div><span class="sarr">›</span></div>'+
+      '<div class="srow static"><span class="sico">📱</span><div class="sb"><div class="sl">iPhone · iPad · Android · Desktop</div><div class="ss">Eine PWA für alle Geräte</div></div></div>'+
+    '</div>'+
+    '<div class="sect reveal"><div class="sect-h">Kontakt</div>'+
+      '<a class="srow" href="mailto:'+MAIL+'"><span class="sico">✉️</span><div class="sb"><div class="sl">'+MAIL+'</div><div class="ss">Fragen & Feedback</div></div><span class="sarr">›</span></a>'+
+      '<div class="srow" onclick="openLegal(\'impressum\')"><span class="sico">⚖️</span><div class="sb"><div class="sl">Impressum</div><div class="ss">Rechtliche Angaben</div></div><span class="sarr">›</span></div>'+
+      '<div class="srow" onclick="openLegal(\'datenschutz\')"><span class="sico">🔒</span><div class="sb"><div class="sl">Datenschutz</div><div class="ss">Deine Daten bleiben lokal</div></div><span class="sarr">›</span></div>'+
+    '</div>'+
+  '</div>'+
+  '<div class="secttitle"><span class="bar"></span><div><h2>Feedback senden</h2></div></div>'+
+  '<div class="sect" style="padding:16px">'+feedbackFormHTML()+'</div>'+
+  footerHTML();
+  hookReveal();
+}
+function feedbackFormHTML(){
+  return '<form onsubmit="return sendFeedback(event)">'+
+    '<div class="fld"><label class="flbl">Name (optional)</label><input class="inp" id="fbName" placeholder="Dein Name"></div>'+
+    '<div class="fld"><label class="flbl">Betreff</label><input class="inp" id="fbBetreff" value="Feedback zu Mein Rezeptbuch" placeholder="Worum geht es?"></div>'+
+    '<div class="fld"><label class="flbl">Deine Nachricht *</label><textarea class="inp" id="fbText" required placeholder="Idee, Frage oder Rückmeldung …"></textarea></div>'+
+    '<button class="btn pri block lg" type="submit">✉️ Per E-Mail senden</button>'+
+    '<p style="color:var(--ink-3);font-size:.78rem;margin:10px 2px 0">Es öffnet sich dein E-Mail-Programm mit vorausgefüllter Nachricht an '+MAIL+'.</p>'+
+  '</form>';
+}
+function sendFeedback(e){
+  e.preventDefault();
+  const n=$('fbName').value.trim(),b=$('fbBetreff').value.trim()||'Feedback zu Mein Rezeptbuch',t=$('fbText').value.trim();
+  if(!t){toast('Bitte eine Nachricht eingeben.');return false;}
+  const body=(n?('Von: '+n+'\n\n'):'')+t+'\n\n— gesendet über die Mein-Rezeptbuch-Seite';
+  window.location.href='mailto:'+MAIL+'?subject='+encodeURIComponent(b)+'&body='+encodeURIComponent(body);
+  toast('E-Mail-Programm wird geöffnet …');closeSheet();return false;
+}
+
+/* ===== Footer ===== */
+function footerHTML(){
+  return '<div class="foot">'+
+    '<div class="bigbrand">Mein <i>Rezeptbuch</i> · offline & mit KI</div>'+
+    'Version 10.0 · © 2026 Klaus Nitzsche · '+MAIL+'<br>'+
+    '<a onclick="openLegal(\'impressum\')">Impressum</a>·<a onclick="openLegal(\'datenschutz\')">Datenschutz</a>·<a href="'+APP_URL+'" target="_blank" rel="noopener">Zur App</a>'+
+    '<div style="margin-top:10px;font-size:.74rem;color:var(--ink-3)">Deine Rezepte. Dein Gerät. Deine Küche.</div>'+
+  '</div>';
+}
+
+/* ===== Detail-Sheets ===== */
+function openFeature(id){
+  const sv=FEATURES.find(x=>x.id===id);if(!sv)return;
+  const hero=sv.img
+    ?'<div class="sh-hero ph16" data-slot="fe-'+sv.id+'"><img src="'+h(sv.img)+'" alt="" onerror="this.style.display=\'none\'"><span class="phi">'+sv.icon+'</span></div>'
+    :'<div class="sh-hero ph16"><span class="phi">'+sv.icon+'</span></div>';
+  openSheet(sv.title,
+    hero+
+    '<div class="taglist"><span>'+h(sv.tag)+'</span></div>'+
+    '<p>'+h(sv.long)+'</p><h4>Das kann die Funktion</h4>'+
+    '<div class="taglist">'+sv.feats.map(f=>'<span>✓ '+h(f)+'</span>').join('')+'</div>',
+    '<button class="btn sec" onclick="closeSheet()">Schließen</button><button class="btn pri" onclick="openApp()">In der App öffnen</button>');
+}
+function openImg(img,t,sub){
+  openSheet(t,
+    '<div class="sh-hero"><img src="'+h(img)+'" alt="'+h(t)+'" onerror="this.style.display=\'none\'"></div>'+
+    '<p><b>'+h(sub)+'</b></p><p>Erstellt und verwaltet in Mein Rezeptbuch. Fotos kommen per KI-Import ins Rezept, gestaltete Seiten aus dem KI-Food-Zine.</p>',
+    '<button class="btn sec" onclick="closeSheet()">Schließen</button><button class="btn pri" onclick="openApp()">App öffnen</button>');
+}
+function openLegal(which){
+  const imp='<p><b>Angaben gemäß § 5 TMG</b></p>'+
+    '<p>Klaus Nitzsche<br>Märchenweg 14<br>21077 Hamburg<br>Deutschland</p>'+
+    '<p>E-Mail: '+MAIL+'</p>'+
+    '<p>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV: Klaus Nitzsche (Adresse wie oben).</p>'+
+    '<p style="color:var(--ink-3);font-size:.85rem">Mein Rezeptbuch v10.0 · © 2026 Klaus Nitzsche. Diese Seite bewirbt die kostenlose Web-App „Mein Rezeptbuch".</p>';
+  const ds='<p><b>1. Verantwortlicher</b><br>Klaus Nitzsche, Märchenweg 14, 21077 Hamburg · '+MAIL+'</p>'+
+    '<p><b>2. Bereitstellung (Hosting)</b><br>Diese Seite und die App werden über GitHub Pages bereitgestellt. Beim Aufruf werden technische Daten (z.&nbsp;B. IP-Adresse, Browserinfos) an GitHub übertragen, um die Inhalte auszuliefern.</p>'+
+    '<p><b>3. Lokale Datenverarbeitung</b><br>Alle Inhalte der App (z.&nbsp;B. Rezepte) werden ausschließlich lokal im Browser gespeichert (LocalStorage/IndexedDB). Es erfolgt keine Speicherung auf Servern des Betreibers.</p>'+
+    '<p><b>4. KI-Dienste</b><br>Für KI-Funktionen werden Inhalte (Bilder/Texte) an externe KI-Dienste übermittelt. Die Übertragung erfolgt verschlüsselt und ausschließlich zur Verarbeitung der Anfrage; der Betreiber speichert dabei nichts.</p>'+
+    '<p><b>5. API-Schlüssel</b><br>Ein vom Nutzer eingegebener API-Schlüssel wird nur lokal im Browser gespeichert und nicht an den Betreiber übertragen.</p>'+
+    '<p><b>6. Kartendienst</b><br>Diese Landingpage bindet keine externen Karten oder Tracker ein.</p>'+
+    '<p style="color:var(--ink-3);font-size:.85rem">Da keine zentrale Datenspeicherung erfolgt, bestimmst du selbst die Speicherdauer deiner Daten auf deinem Gerät.</p>';
+  openSheet(which==='impressum'?'Impressum':'Datenschutz',which==='impressum'?imp:ds,'<button class="btn pri block" onclick="closeSheet()">Schließen</button>');
+}
+
+/* ===== Sheet engine ===== */
+function openSheet(title,body,foot){
+  const m=$('modals');
+  m.innerHTML='<div class="sh-bg" onclick="if(event.target===this)closeSheet()">'+
+    '<div class="sheet"><div class="sh-handle"></div>'+
+    '<div class="sh-hdr"><div class="sh-title">'+h(title)+'</div><button class="sh-x" onclick="closeSheet()">✕</button></div>'+
+    '<div class="sh-body">'+body+'</div>'+
+    (foot!==''?'<div class="sh-foot">'+foot+'</div>':'')+'</div></div>';
+  bindTips(m);
+  if(window.RBImg)RBImg.apply(m);
+}
+function closeSheet(){$('modals').innerHTML='';}
+
+/* ===== Theme ===== */
+function applyTheme(k){
+  document.documentElement.setAttribute('data-theme',k);
+  try{localStorage.setItem('rb-theme',k);}catch(e){}
+  $('metaTheme').setAttribute('content',THEME_META[k]||'#7a5840');
+  $('tbDark').textContent=(k==='night'||k==='neon')?'☀️':'🌙';
+  if(window.MycelBg)try{window.MycelBg.setTheme();}catch(e){}
+}
+function quickDark(){const cur=document.documentElement.getAttribute('data-theme');applyTheme(cur==='night'?'default':'night');}
+function openThemes(){
+  const cur=document.documentElement.getAttribute('data-theme');
+  const body=THEMES.map(t=>'<div class="themeopt'+(t.key===cur?' on':'')+'" onclick="applyTheme(\''+t.key+'\');openThemes()">'+
+    '<span class="sw">'+t.sw.map(c=>'<i style="background:'+c+'"></i>').join('')+'</span>'+
+    '<div class="tl"><b>'+h(t.name)+'</b><small>'+h(t.desc)+'</small></div><span class="ck">✓</span></div>').join('');
+  openSheet('Design wählen',body,'<button class="btn pri block" onclick="closeSheet()">Fertig</button>');
+}
+
+/* ===== Navigation ===== */
+const RENDERED={};
+const RENDERERS=[renderStart,renderFunktionen,renderKi,renderThemen,renderFaq,renderKontakt];
+function buildNav(){
+  $('bottomnav').innerHTML=NAV.map((n,i)=>'<button class="navbtn'+(i===0?' on':'')+'" id="nav-'+i+'" onclick="goTo('+i+')" data-tip="'+h(n.full)+'"><span class="ni">'+n.ico+'</span><span>'+h(n.label)+'</span></button>').join('');
+  $('topnav').innerHTML=NAV.map((n,i)=>'<button class="'+(i===0?'on':'')+'" id="tnav-'+i+'" onclick="goTo('+i+')">'+h(n.full)+'</button>').join('');
+}
+function goTo(i){
+  NAV.forEach((n,idx)=>{
+    $('sc-'+n.id).classList.toggle('on',idx===i);
+    $('nav-'+idx).classList.toggle('on',idx===i);
+    $('tnav-'+idx).classList.toggle('on',idx===i);
+  });
+  $('searchArea').classList.toggle('on',i===1);
+  if(!RENDERED[i]){RENDERERS[i]();RENDERED[i]=true;}
+  if(window.RBImg)RBImg.apply($('sc-'+NAV[i].id));
+  window.scrollTo(0,0);closeSheet();
+}
+
+/* ===== Scroll reveal ===== */
+let _io;
+function hookReveal(){
+  if(!_io){_io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');_io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});}
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>_io.observe(el));
+}
+
+/* ===== Tooltips ===== */
+let _tip;
+function showTip(el){
+  const txt=el.getAttribute('data-tip');if(!txt)return;
+  if(!_tip){_tip=document.createElement('div');_tip.className='wf-tip';document.body.appendChild(_tip);}
+  _tip.textContent=txt;const r=el.getBoundingClientRect();
+  _tip.style.left=Math.min(Math.max(8,r.left+r.width/2-120),innerWidth-248)+'px';
+  _tip.style.top=(r.bottom+8>innerHeight-60?r.top-44:r.bottom+8)+'px';
+  requestAnimationFrame(()=>_tip.classList.add('on'));
+}
+function hideTip(){if(_tip)_tip.classList.remove('on');}
+function bindTips(root){
+  (root||document).querySelectorAll('[data-tip]').forEach(el=>{
+    if(el._tb)return;el._tb=1;
+    el.addEventListener('mouseenter',()=>showTip(el));
+    el.addEventListener('mouseleave',hideTip);
+    let lp;
+    el.addEventListener('touchstart',()=>{lp=setTimeout(()=>showTip(el),420);},{passive:true});
+    el.addEventListener('touchend',()=>{clearTimeout(lp);setTimeout(hideTip,1200);});
+  });
+}
+
+/* ===== Install ===== */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;
+  if(!localStorage.getItem('rb-install-x'))$('installBar').classList.add('on');});
+function installApp(){if(!deferredPrompt){toast('Über das Browser-Menü „Zum Startbildschirm hinzufügen".');return;}
+  deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;$('installBar').classList.remove('on');});}
+function dismissInstall(){$('installBar').classList.remove('on');localStorage.setItem('rb-install-x','1');}
+window.addEventListener('appinstalled',()=>{$('installBar').classList.remove('on');toast('Installiert – viel Freude beim Kochen!');});
+
+/* ===== Splash ===== */
+let splashDone=false;
+function runSplash(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){
+    $('spGlow').classList.add('grow');$('spEmblem').classList.add('open');$('spWord').classList.add('on');
+    setTimeout(endSplash,900);return;
+  }
+  $('spGlow').classList.add('grow');
+  setTimeout(()=>$('spEmblem').classList.add('open'),250);
+  setTimeout(()=>$('spWord').classList.add('on'),1400);
+  setTimeout(()=>$('spFlash').classList.add('go'),2000);
+  setTimeout(endSplash,2700);
+}
+function endSplash(){if(splashDone)return;splashDone=true;$('splash').classList.add('gone');setTimeout(()=>{const s=$('splash');if(s)s.remove();},700);}
+function skipSplash(){endSplash();}
+
+/* ===== Init ===== */
+$('appBtn').href=APP_URL;
+applyTheme(localStorage.getItem('rb-theme')||'default');
+buildNav();
+goTo(0);
+bindTips(document);
+runSplash();
+if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>

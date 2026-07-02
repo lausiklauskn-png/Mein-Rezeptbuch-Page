@@ -557,13 +557,14 @@ const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
 function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('toasts').appendChild(t);
   setTimeout(()=>{t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(()=>t.remove(),400);},2600);}
 function openApp(){window.open(APP_URL,'_blank','noopener');}
-/* Demo-Video-Raum: spielt assets/demo.mp4, sobald vorhanden – sonst freundlicher Hinweis */
+/* Demo-Video-Raum: spielt assets/demo.webm (mp4 als Fallback-Slot) */
 function playDemo(){
   const box=$('videoBox');if(!box||box._playing)return;
-  const v=document.createElement('video');v.src='assets/demo.mp4';v.controls=true;v.playsInline=true;v.setAttribute('playsinline','');
-  v.onerror=()=>{toast('Kurzes Demo-Video folgt – hier wird es eingebettet.');};
-  v.oncanplay=()=>{box._playing=true;box.innerHTML='';box.appendChild(v);v.play().catch(()=>{});};
-  v.load();
+  const v=document.createElement('video');
+  v.controls=true;v.autoplay=true;v.playsInline=true;v.setAttribute('playsinline','');v.poster='assets/demo-poster.jpg';
+  v.src='assets/demo.webm';
+  v.onerror=()=>{toast('Demo-Video konnte nicht geladen werden.');};
+  box._playing=true;box.innerHTML='';box.appendChild(v);v.play().catch(()=>{});
 }
 
 /* ===== Navigation ===== */

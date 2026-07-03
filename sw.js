@@ -1,7 +1,7 @@
 /* Mein Rezeptbuch · Landingpage — Service Worker (Offline + Installierbarkeit)
    Cache-Name als Versionsstempel: bei jeder Auslieferung +1.
    HTML = Network-First (frische Seite, sonst Cache), Assets = Cache-First. */
-const CACHE = 'rezeptbuch-page-v7';
+const CACHE = 'rezeptbuch-page-v8';
 const ASSETS = [
   './', 'index.html', 'impressum.html', 'effects.js', 'manifest.webmanifest',
   'assets/mycel-bg.js', 'vendor/three.module.min.js',

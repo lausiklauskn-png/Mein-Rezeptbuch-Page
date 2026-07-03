@@ -39,6 +39,8 @@
   --accent-soft:color-mix(in srgb,var(--accent) 15%,var(--surface));
   --ok:var(--grn);--ok-soft:var(--grns);--warn:var(--gold);--danger:var(--rust);--danger-soft:var(--rusts);
   --glow:0 0 26px color-mix(in srgb,var(--accent) 42%,transparent),0 0 60px color-mix(in srgb,var(--accent) 20%,transparent);
+  /* Iridescent-Verlauf für das Hologramm-Theme – rotiert via @property --rot (Vorlage: Mein-Mixarium .mx-btn-holo) */
+  --grad-iridescent:conic-gradient(from var(--rot,0deg) at 50% 50%,#ffd6e0 0%,#ffefb5 16%,#d8ffec 32%,#cce8ff 48%,#e6d4ff 64%,#ffd6e0 80%,#ffefb5 100%);
   --radius:16px;--radius-s:10px;--fs:15px;
   --shadow:0 4px 20px rgba(40,30,16,.10);--shadow-lg:0 12px 40px rgba(40,30,16,.20);
 }
@@ -50,7 +52,22 @@
 [data-theme=colorful]{--sand:#fef9f0;--sand2:#fad8c0;--parch:#fffbf5;--ink:#280e04;--br:#dc5a18;--br2:#cc7c28;--br3:#e0a058;--rust:#c02858;--rusts:#fce8f0;--grn:#489018;--grns:#dcf4c8;--teal:#1888a0;--teals:#c8eff4;--gold:#dc9e08;--golds:#fef8c8}
 [data-theme=neon]{--sand:#0d0d1a;--sand2:#1c1830;--parch:#12101e;--ink:#e6deff;--br:#9d5cff;--br2:#7a3dd8;--br3:#9a70e8;--rust:#ff3f9a;--rusts:#2a0918;--grn:#00d68f;--grns:#002616;--teal:#00c8f0;--teals:#001a24;--gold:#ffe033;--golds:#1a1602}
 [data-theme=pastel]{--sand:#fff0f9;--sand2:#f0d0ea;--parch:#fff8fe;--ink:#2a1830;--br:#c050c8;--br2:#d878d4;--br3:#d4a8cc;--rust:#ff6090;--rusts:#ffe0eb;--grn:#4ec888;--grns:#d4f2e4;--teal:#38b8cc;--teals:#ccf0f6;--gold:#f5a020;--golds:#fff0d0}
-[data-theme=spektral]{--sand:#f2f0ff;--sand2:#ddd8f8;--parch:#f8f6ff;--ink:#160828;--br:#6600cc;--br2:#8833dd;--br3:#aa66ee;--rust:#cc1144;--rusts:#fde8ee;--grn:#007733;--grns:#d8ffe8;--teal:#006699;--teals:#d0eeff;--gold:#bb7700;--golds:#fff0cc}
+[data-theme=holo]{--sand:#fbf9ff;--sand2:#efe6fb;--parch:#ffffff;--ink:#2c1e3e;--br:#a78bfa;--br2:#c4b0fe;--br3:#ddd0ff;--rust:#f472b6;--rusts:#fce0ee;--grn:#2bb8a3;--grns:#d0f7f0;--teal:#818cf8;--teals:#e6e9ff;--gold:#e0a500;--golds:#fff5d4}
+/* ── Hologramm-Theme: echte, sich selbst drehende Iridescent-Effekte (auch ohne Maus) ── */
+@keyframes holo-slide{to{background-position:200% 0}}
+[data-theme=holo] .btn.pri{background:var(--grad-iridescent);color:#241631;text-shadow:0 1px 0 rgba(255,255,255,.55);animation:holo-rot 18s linear infinite;border:1px solid rgba(255,255,255,.5)}
+[data-theme=holo] .btn.pri:hover{animation-duration:8s}
+[data-theme=holo] .btn.pri:active{animation-duration:1.6s}
+[data-theme=holo] .fab{background:var(--grad-iridescent);color:#241631;animation:holo-rot 22s linear infinite;box-shadow:0 8px 24px -4px rgba(167,139,250,.6)}
+[data-theme=holo] .htag{background:var(--grad-iridescent);color:#241631;animation:holo-rot 16s linear infinite}
+[data-theme=holo] .secttitle .bar{background:var(--grad-iridescent);animation:holo-rot 14s linear infinite}
+[data-theme=holo] .navbtn.on{color:#a855f7}
+[data-theme=holo] .topbar,[data-theme=holo] .bottomnav{position:relative}
+[data-theme=holo] .topbar::after,[data-theme=holo] .bottomnav::after{content:"";position:absolute;left:0;right:0;height:3px;z-index:3;pointer-events:none;
+  background:linear-gradient(90deg,#ffd6e0,#ffefb5,#d8ffec,#cce8ff,#e6d4ff,#ffd6e0);background-size:200% 100%;animation:holo-slide 6s linear infinite}
+[data-theme=holo] .topbar::after{bottom:-1px}
+[data-theme=holo] .bottomnav::after{top:-1px}
+@media (prefers-reduced-motion:reduce){[data-theme=holo] .btn.pri,[data-theme=holo] .fab,[data-theme=holo] .htag,[data-theme=holo] .secttitle .bar,[data-theme=holo] .topbar::after,[data-theme=holo] .bottomnav::after{animation:none}}
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
@@ -662,8 +679,8 @@ const FEATURES=[
    feats:['8 Sprachen','Ein-Tipp-Umschaltung','Für mehrsprachige Familien']},
   {id:'themen',cat:'app',icon:'🎨',img:'img/theme-spektral.jpg',tag:'Design',
    title:'Viele Themen',
-   short:'Von Landhaus über Nacht bis Spektral – wähle das Design, das dir gefällt. Auch auf dieser Seite.',
-   long:'Mein Rezeptbuch bringt viele Farbwelten mit – warm wie „Landhaus", ruhig wie „Nacht", frisch wie „Frühling" oder verspielt wie „Spektral" und „Neon". Diese Landingpage kann dieselben Themen: probiere sie oben über das 🎨-Symbol aus.',
+   short:'Von Landhaus über Nacht bis Hologramm – wähle das Design, das dir gefällt. Auch auf dieser Seite.',
+   long:'Mein Rezeptbuch bringt viele Farbwelten mit – warm wie „Landhaus", ruhig wie „Nacht", frisch wie „Frühling" oder schillernd wie „Hologramm" (echte, sich drehende Hologramm-Effekte in Buttons und Navileiste) und „Neon". Diese Landingpage kann dieselben Themen: probiere sie oben über das 🎨-Symbol aus.',
    feats:['8+ Farbwelten','Hell & Dunkel','Hoher Kontrast','Auch hier wählbar']},
   {id:'backup',cat:'offline',icon:'💾',tag:'Sicherung',
    title:'Backup-Tresor',
@@ -699,9 +716,9 @@ const THEMES=[
   {key:'colorful',name:'Bunt',desc:'Kräftig & warm',sw:['#fef9f0','#dc5a18','#c02858','#489018']},
   {key:'neon',name:'Neon',desc:'Dunkel & leuchtend',sw:['#0d0d1a','#9d5cff','#ff3f9a','#00d68f']},
   {key:'pastel',name:'Pastell',desc:'Zart & rosa',sw:['#fff0f9','#c050c8','#ff6090','#4ec888']},
-  {key:'spektral',name:'Spektral',desc:'Regenbogen',sw:['#FF0000','#FFE500','#00CC00','#8800FF']},
+  {key:'holo',name:'Hologramm',desc:'Echtes Hologramm – Farben drehen sich',sw:['#a78bfa','#5eead4','#fcd34d','#fb7185']},
 ];
-const THEME_META={default:'#7a5840',spring:'#437230',night:'#181410',modern:'#284880',colorful:'#dc5a18',neon:'#0d0d1a',pastel:'#c050c8',spektral:'#8800cc'};
+const THEME_META={default:'#7a5840',spring:'#437230',night:'#181410',modern:'#284880',colorful:'#dc5a18',neon:'#0d0d1a',pastel:'#c050c8',holo:'#a78bfa'};
 
 const LANGS=[['🇩🇪','Deutsch'],['🇬🇧','English'],['🇷🇺','Русский'],['🇨🇳','中文'],['🇪🇸','Español'],['🇫🇷','Français'],['🇮🇹','Italiano'],['🇵🇹','Português']];
 

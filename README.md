@@ -4,6 +4,7 @@ Installierbare **PWA-Landingpage** für die App **[Mein Rezeptbuch](https://laus
 sie stellt vor, *was* die App kann, *wie* sie es macht und *für wen* sie nützlich ist.
 Aufbau und Technik sind ein umgebrandeter Klon der ISD-Page-Entwurf-Struktur, vollständig
 auf Mein Rezeptbuch zugeschnitten (keine Fremdbezüge mehr).
+**Live:** https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/
 
 ## Aufbau
 

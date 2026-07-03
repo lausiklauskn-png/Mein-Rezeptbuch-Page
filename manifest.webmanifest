@@ -1,7 +1,7 @@
 {
   "name": "Mein Rezeptbuch · Deine Rezepte, offline & mit KI",
   "short_name": "Mein Rezeptbuch",
-  "description": "Persönliche Rezept-App: offline, ohne Konto, kostenlos – mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen und Food-Zine-Generator.",
+  "description": "Persönliche Rezept-App: offline, ohne Konto, ohne Zwangs-Abo – mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen und Food-Zine-Generator.",
   "lang": "de",
   "start_url": ".",
   "scope": ".",

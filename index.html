@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#7a5840" id="metaTheme">
-<meta name="description" content="Mein Rezeptbuch — die persönliche Rezept-App: offline, ohne Konto, kostenlos. Mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen, Nährwerten und dem KI-Food-Zine-Generator. Als App installierbar auf iPhone, Android & Desktop.">
+<meta name="description" content="Mein Rezeptbuch — die persönliche Rezept-App: offline, ohne Konto, ohne Zwangs-Abo. Mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen, Nährwerten und dem KI-Food-Zine-Generator. Als App installierbar auf iPhone, Android & Desktop.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,7 +12,7 @@
 <title>Mein Rezeptbuch · Deine Rezepte, offline & mit KI</title>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Mein Rezeptbuch · Deine Rezepte, offline & mit KI">
-<meta property="og:description" content="Die persönliche Rezept-App: offline, ohne Konto, kostenlos – mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen und Food-Zine-Generator.">
+<meta property="og:description" content="Die persönliche Rezept-App: offline, ohne Konto, ohne Zwangs-Abo – mit KI-Import (Foto, URL, Text, PDF), KI-Wochenplan, QR-Teilen und Food-Zine-Generator.">
 <meta property="og:image" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/img/zine-ratatouille.jpg">
 <meta property="og:url" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/">
 <meta name="twitter:card" content="summary_large_image">
@@ -593,11 +593,11 @@ const FEATURES=[
    short:'Alle Rezepte bleiben auf deinem Gerät. Lesen, kochen, bearbeiten, planen, teilen – alles ohne Internet.',
    long:'Alle Rezepte bleiben auf deinem Gerät. Die App funktioniert ohne Internetzugang – im Urlaub, im Keller oder im Flieger. Rezepte lesen, kochen, bearbeiten, Wochenplan und QR-Teilen: alles offline. Nur die KI-Funktionen (Scan, KI-Wochenplan, Food-Zine) brauchen Internet.',
    feats:['100 % lokal gespeichert','Kein Tracking','Funktioniert offline','Datenschutz by Design']},
-  {id:'kostenlos',cat:'offline',icon:'🆓',tag:'Preis',
-   title:'Dauerhaft kostenlos – kein Abo',
-   short:'Die App ist für immer gratis. Keine Premium-Version, kein Monatsabo, keine Werbung.',
-   long:'Die App selbst ist dauerhaft kostenlos – keine Premium-Version, kein Monatsabo, keine Werbung. KI-Funktionen nutzen deinen eigenen API-Key: du zahlst nur, wenn du KI wirklich benutzt – typisch wenige Cent pro Monat statt 5–8 € Abo bei der Konkurrenz.',
-   feats:['Keine Werbung','Kein Monatsabo','Pay-per-Use KI','Volle Kostenkontrolle']},
+  {id:'kostenlos',cat:'offline',icon:'🙂',tag:'Fair',
+   title:'Fair & transparent – kein Zwangs-Abo',
+   short:'Keine Werbung und kein aufgezwungenes Monatsabo. KI-Funktionen laufen über deinen eigenen API-Key – du zahlst nur, was du nutzt.',
+   long:'Mein Rezeptbuch verzichtet auf Werbung und aufgezwungene Monatsabos. Die KI-Funktionen nutzen deinen eigenen API-Key: du zahlst nur, wenn du KI wirklich benutzt – meist nur wenige Cent. Das Projekt kannst du freiwillig unterstützen (z. B. per PayPal).',
+   feats:['Keine Werbung','Kein Zwangs-Abo','Pay-per-Use KI','Freiwillige Unterstützung']},
   {id:'konto',cat:'offline',icon:'🚫',tag:'Sofort',
    title:'Kein Konto nötig',
    short:'Kein Anmelden, kein Passwort, keine E-Mail. Die App öffnet sich sofort – ohne jede Hürde.',
@@ -627,7 +627,7 @@ const FEATURES=[
    title:'KI-Wochenplan',
    short:'Die KI schlägt auf Knopfdruck einen kompletten Wochenplan aus deinen eigenen Rezepten vor.',
    long:'Die integrierte KI schlägt auf Knopfdruck einen kompletten Wochenplan aus den eigenen Rezepten vor – abgestimmt auf Vorlieben und Verfügbarkeit. Wo andere Apps dafür ein Monatsabo verlangen, zahlst du hier nur den winzigen API-Aufruf.',
-   feats:['Frühstück/Mittag/Abend','Aus eigenen Rezepten','Einkaufsliste','Kein Abo nötig']},
+   feats:['Frühstück/Mittag/Abend','Aus eigenen Rezepten','Einkaufsliste','Kein Monatsabo-Zwang']},
   {id:'naehrwerte',cat:'ki',icon:'🧮',tag:'Nährwerte',
    title:'Nährwertberechnung per KI',
    short:'Die KI schätzt Kalorien, Protein, Kohlenhydrate und Fett für jedes Rezept – direkt integriert.',
@@ -704,12 +704,12 @@ const THEME_META={default:'#7a5840',spring:'#437230',night:'#181410',modern:'#28
 const LANGS=[['🇩🇪','Deutsch'],['🇬🇧','English'],['🇷🇺','Русский'],['🇨🇳','中文'],['🇪🇸','Español'],['🇫🇷','Français'],['🇮🇹','Italiano'],['🇵🇹','Português']];
 
 const FAQS=[
-  {q:'Ist die App wirklich kostenlos?',a:'Ja. Mein Rezeptbuch ist dauerhaft kostenlos – keine Premium-Version, kein Monatsabo, keine Werbung. Nur die KI-Funktionen laufen über deinen eigenen API-Key und kosten dort typisch wenige Cent pro Monat.'},
+  {q:'Was kostet Mein Rezeptbuch?',a:'Die App lässt sich ohne aufgezwungenes Monatsabo und ohne Werbung nutzen. Die KI-Funktionen laufen über deinen eigenen API-Key und kosten dort typisch nur wenige Cent pro Monat. Das Projekt kannst du freiwillig unterstützen, z. B. per PayPal.'},
   {q:'Brauche ich ein Konto oder eine Anmeldung?',a:'Nein. Kein Login, kein Passwort, keine E-Mail-Adresse. Die App öffnet sich sofort. Alle Rezepte bleiben lokal auf deinem Gerät.'},
   {q:'Funktioniert die App offline?',a:'Die Kernfunktionen ja: Rezepte lesen, kochen, bearbeiten, Wochenplan und QR-Teilen laufen komplett ohne Internet. Nur die KI-Funktionen (Foto-Scan, KI-Wochenplan, Food-Zine, Nährwerte) brauchen eine Verbindung.'},
   {q:'Wie funktioniert der KI-Import?',a:'Du gibst ein Rezept als Foto, Website-URL, Text oder PDF hinein – die KI erkennt Zutaten und Schritte und legt daraus ein sauber strukturiertes Rezept an. Sogar aus einem reinen Foto eines fertigen Gerichts (ohne Text) erstellt die Vision-KI ein Rezept.'},
   {q:'Was ist das Food-Zine?',a:'Das KI-Kreativbuch macht aus jedem Rezept ein gestaltetes Magazin: Poster, Zeitungsseite, Instagram-Kachel, Rezeptkarte und mehr – wahlweise mit Nährwert-Infografik, Step-Diagramm oder Vintage-Look. Ideal zum Ausdrucken, Verschenken oder Teilen.'},
-  {q:'Was kostet die KI und wie wird abgerechnet?',a:'Du hinterlegst einmalig deinen eigenen API-Key. Du zahlst nur, wenn du KI nutzt – ein Foto-Scan kostet typisch 0,001–0,01 €. Wer 5× pro Monat scannt, zahlt etwa 2–5 Cent im Monat. Volle Kostenkontrolle, kein Abo.'},
+  {q:'Was kostet die KI und wie wird abgerechnet?',a:'Du hinterlegst einmalig deinen eigenen API-Key. Du zahlst nur, wenn du KI nutzt – ein Foto-Scan kostet typisch 0,001–0,01 €. Wer 5× pro Monat scannt, zahlt etwa 2–5 Cent im Monat. Volle Kostenkontrolle bei der KI-Nutzung.'},
   {q:'Auf welchen Geräten läuft die App?',a:'Als Progressive Web App auf iPhone, iPad, Android, Mac und Desktop-PC. Über das Browser-Menü „Zum Startbildschirm hinzufügen" landet sie wie eine echte App auf dem Homescreen – ganz ohne App Store.'},
   {q:'In welchen Sprachen gibt es die App?',a:'In acht Sprachen: Deutsch, Englisch, Russisch, Chinesisch, Spanisch, Französisch, Italienisch und Portugiesisch – ideal für mehrsprachige Familien.'},
 ];
@@ -732,13 +732,13 @@ function renderStart(){
     '</div>'+
   '</div>'+
   '<div class="stats reveal">'+
-    '<div class="stat"><div class="n">0 €</div><div class="l">App – kein Abo</div></div>'+
+    '<div class="stat"><div class="n">0</div><div class="l">Konto nötig</div></div>'+
     '<div class="stat"><div class="n">100 %</div><div class="l">auf deinem Gerät</div></div>'+
     '<div class="stat"><div class="n">4</div><div class="l">KI-Import-Wege</div></div>'+
     '<div class="stat"><div class="n">8</div><div class="l">Sprachen</div></div>'+
   '</div>'+
   '<div class="secttitle reveal"><span class="bar"></span><div><h2>Was ist Mein Rezeptbuch?</h2></div></div>'+
-  '<p class="lead reveal">Die meisten Rezept-Apps speichern deine Daten in der Cloud, verlangen eine Registrierung, zeigen Werbung oder ein Monatsabo, sobald KI dazukommt. <b>Mein Rezeptbuch macht das anders:</b> alles läuft lokal auf deinem Gerät – kein Konto, keine Werbung, kein App-Abo – und trotzdem mit modernen KI-Funktionen. KI-Scans kosten nur Bruchteile eines Cents pro Nutzung, über deinen eigenen API-Key. Das ist die Kombination, die es so noch nicht gibt.</p>'+
+  '<p class="lead reveal">Die meisten Rezept-Apps speichern deine Daten in der Cloud, verlangen eine Registrierung, zeigen Werbung oder ein Monatsabo, sobald KI dazukommt. <b>Mein Rezeptbuch macht das anders:</b> alles läuft lokal auf deinem Gerät – kein Konto, keine Werbung, ohne aufgezwungenes Abo – und trotzdem mit modernen KI-Funktionen. KI-Scans kosten nur Bruchteile eines Cents pro Nutzung, über deinen eigenen API-Key. Das ist die Kombination, die es so noch nicht gibt.</p>'+
   '<div class="secttitle reveal"><span class="bar"></span><div><h2>Ein Blick in die App</h2><div class="sub">Echte Screens aus Mein Rezeptbuch</div></div></div>'+
   '<div class="phones reveal">'+
     phoneHTML('ui-folders','Ordner & Kategorien','47 Rezepte, sauber sortiert')+
@@ -756,7 +756,7 @@ function renderStart(){
   '<div style="text-align:center;margin:18px 0 4px"><button class="btn sec lg" onclick="goTo(1)">Alle Funktionen ansehen →</button></div>'+
   '<div class="secttitle reveal"><span class="bar"></span><div><h2>Für wen ist die App gemacht?</h2></div></div>'+
   audienceHTML()+
-  '<div style="text-align:center;margin:20px 0 4px"><button class="btn pri lg" onclick="openApp()">📖 Jetzt kostenlos öffnen</button></div>'+
+  '<div style="text-align:center;margin:20px 0 4px"><button class="btn pri lg" onclick="openApp()">📖 Jetzt ausprobieren</button></div>'+
   footerHTML();
   $('startGrid').innerHTML=[FEATURES[0],FEATURES[3],FEATURES[6]].map(cardHTML).join('');
   hookReveal();
@@ -829,7 +829,7 @@ function renderKi(){
   const s=$('sc-ki');
   s.innerHTML=
   '<h1 class="pagehead">KI & Food-Zine</h1>'+
-  '<p class="lead">Der besondere Dreh von Mein Rezeptbuch: <b>moderne KI ohne Monatsabo</b>. Du nutzt deinen eigenen API-Key und zahlst nur Bruchteile eines Cents – für Rezept-Scan, Wochenplan, Nährwerte und den Food-Zine-Generator.</p>'+
+  '<p class="lead">Der besondere Dreh von Mein Rezeptbuch: <b>moderne KI ohne teures Monatsabo</b>. Du nutzt deinen eigenen API-Key und zahlst nur Bruchteile eines Cents – für Rezept-Scan, Wochenplan, Nährwerte und den Food-Zine-Generator.</p>'+
   '<div class="secttitle"><span class="bar"></span><div><h2>Vom Foto zum fertigen Rezept</h2></div></div>'+
   '<div class="flow reveal">'+
     '<div class="flowstep"><div class="fimg" data-slot="flow-in"><img src="img/dumplings.jpg" alt="" loading="lazy"></div><div class="fico">📸</div><h4>1 · Foto rein</h4><p>Ein Bild von Gericht, Kochbuch, Website oder PDF – oder einfach Text.</p></div>'+
@@ -844,7 +844,7 @@ function renderKi(){
   '<div class="secttitle"><span class="bar"></span><div><h2>Wie funktionieren die KI-Kosten?</h2></div></div>'+
   '<div class="cgrid reveal">'+
     '<div class="infobox bad"><h3>❌ So machen es andere Apps</h3><p>KI-Funktionen sind hinter einem Monatsabo gesperrt (z.&nbsp;B. 4–8 € / Monat = bis zu 96 € / Jahr) – egal ob du sie viel oder selten nutzt. Wer nicht zahlt, bekommt keine KI.</p></div>'+
-    '<div class="infobox good"><h3>✅ So funktioniert es hier</h3><p>Du hinterlegst einmalig deinen eigenen API-Key (kostenlos anzulegen). Du zahlst nur, wenn du KI nutzt – ein Foto-Scan kostet typisch 0,001–0,01 €. Wer 5× im Monat scannt, zahlt etwa 2–5 Cent. Volle Kostenkontrolle, kein Abo.</p></div>'+
+    '<div class="infobox good"><h3>✅ So funktioniert es hier</h3><p>Du hinterlegst einmalig deinen eigenen API-Key (einmalig anzulegen). Du zahlst nur, wenn du KI nutzt – ein Foto-Scan kostet typisch 0,001–0,01 €. Wer 5× im Monat scannt, zahlt etwa 2–5 Cent. Volle Kostenkontrolle, kein Abo.</p></div>'+
   '</div>'+
   '<div class="secttitle"><span class="bar"></span><div><h2>Vergleich mit bekannten Apps</h2></div></div>'+
   compareHTML()+
@@ -860,7 +860,7 @@ function zineHTML(z,i){
 }
 function compareHTML(){
   const rows=[
-    ['App kostenlos','✓ Ja, immer','Einmalig ~5 €','Basis','✓ Ja'],
+    ['Ohne Zwangs-Abo','✓ Ja','Einmalig ~5 €','Basis','✓ Ja'],
     ['KI ohne Monatsabo','✓ Pay-per-Use','✗ keine KI','✗ Abo ~6 €','~ begrenzt'],
     ['Kein Konto nötig','✓ Ja','~ optional','✗ Pflicht','✗ Konto'],
     ['Offline (Kernfunktionen)','✓ Ja','~ teilweise','✗ Cloud','✗ Cloud'],
@@ -936,7 +936,7 @@ function renderKontakt(){
   const s=$('sc-kontakt');
   s.innerHTML=
   '<h1 class="pagehead">App holen & Kontakt</h1>'+
-  '<p class="lead">Mein Rezeptbuch läuft direkt im Browser und lässt sich als App auf dem Homescreen installieren – kostenlos, ohne App Store.</p>'+
+  '<p class="lead">Mein Rezeptbuch läuft direkt im Browser und lässt sich als App auf dem Homescreen installieren – direkt im Browser, ohne App Store.</p>'+
   '<div class="cgrid" style="margin-top:14px">'+
     '<div class="sect reveal"><div class="sect-h">App installieren</div>'+
       '<a class="srow" href="'+APP_URL+'" target="_blank" rel="noopener"><span class="sico">📖</span><div class="sb"><div class="sl">App öffnen</div><div class="ss">Im Browser starten</div></div><span class="sarr">›</span></a>'+
@@ -1006,7 +1006,7 @@ function openLegal(which){
     '<p>Klaus Nitzsche<br>Märchenweg 14<br>21077 Hamburg<br>Deutschland</p>'+
     '<p>E-Mail: '+MAIL+'</p>'+
     '<p>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV: Klaus Nitzsche (Adresse wie oben).</p>'+
-    '<p style="color:var(--ink-3);font-size:.85rem">Mein Rezeptbuch v10.0 · © 2026 Klaus Nitzsche. Diese Seite bewirbt die kostenlose Web-App „Mein Rezeptbuch".</p>';
+    '<p style="color:var(--ink-3);font-size:.85rem">Mein Rezeptbuch v10.0 · © 2026 Klaus Nitzsche. Diese Seite bewirbt die Web-App „Mein Rezeptbuch".</p>';
   const ds='<p><b>1. Verantwortlicher</b><br>Klaus Nitzsche, Märchenweg 14, 21077 Hamburg · '+MAIL+'</p>'+
     '<p><b>2. Bereitstellung (Hosting)</b><br>Diese Seite und die App werden über GitHub Pages bereitgestellt. Beim Aufruf werden technische Daten (z.&nbsp;B. IP-Adresse, Browserinfos) an GitHub übertragen, um die Inhalte auszuliefern.</p>'+
     '<p><b>3. Lokale Datenverarbeitung</b><br>Alle Inhalte der App (z.&nbsp;B. Rezepte) werden ausschließlich lokal im Browser gespeichert (LocalStorage/IndexedDB). Es erfolgt keine Speicherung auf Servern des Betreibers.</p>'+

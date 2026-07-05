@@ -447,6 +447,18 @@ textarea.inp{resize:vertical;min-height:90px}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
 
 /* ---- Demo-Video-Raum ---- */
+/* ── Rezeptbar-Umbau-Sektion ── */
+.barideas{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px}
+.barideas span{padding:7px 14px;border-radius:999px;border:1px solid var(--line);
+  background:var(--ink-3,rgba(0,0,0,.04));font-size:.86rem;font-weight:600}
+.barsteps{list-style:none;padding:0;margin:14px 0 4px;display:grid;gap:10px}
+.barsteps li{display:flex;gap:12px;align-items:flex-start}
+.barsteps .n{flex:0 0 28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-weight:800;border:1px solid var(--line);background:var(--ink-3,rgba(0,0,0,.04))}
+.barpics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.barpics figure{margin:0}
+.barpics img{width:100%;border-radius:var(--radius);display:block;border:1px solid var(--line);box-shadow:var(--shadow)}
+.barpics figcaption{font-size:.8rem;opacity:.75;margin-top:6px}
 .videobox{position:relative;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow-lg);
   aspect-ratio:16/9;cursor:pointer;background:linear-gradient(135deg,var(--br),var(--rust));margin:6px 0;
   transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d}
@@ -790,7 +802,7 @@ function renderStart(){
   '<div class="secttitle reveal"><span class="bar"></span><div><h2>Beliebte Funktionen</h2><div class="sub">Tippen für Details</div></div></div>'+
   '<div class="sgrid" id="startGrid"></div>'+
   '<div style="text-align:center;margin:18px 0 4px"><button class="btn sec lg" onclick="goTo(1)">Alle Funktionen ansehen →</button></div>'+
-  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Für wen ist die App gemacht?</h2></div></div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Bau dir deine eigene Rezept-Bar</h2><div class="sub">Das Rezeptbuch ist ein Baukasten</div></div></div>'+'<p class="lead reveal">Mein Rezeptbuch ist nicht auf ein Thema festgelegt. Lade ein komplett neues Rezept-Paket (JSON-Datei) herein, benenne Kategorien und Ordner um, ordne alles neu an – schon wird aus dem Kochbuch <b>deine ganz eigene Bar</b>: eine Backstube, ein Grill-Buch, eine Frühstücksbar. Rezepte tauschst du als Datei mit Familie und Freunden – exportieren, weitergeben, hereinladen, fertig.</p>'+'<div class="barideas reveal"><span>🥐 Frühstücksbar</span><span>🍰 Backstube</span><span>🍖 Grill-Buch</span><span>🥗 Salatbar</span><span>🍝 Pasta-Werkstatt</span><span>🌱 Vegane Küche</span></div>'+'<ol class="barsteps reveal"><li><span class="n">1</span><span>Eigenes JSON hereinladen (oder das Buch leeren und neu befüllen) – beim Import wählst du „ersetzen“.</span></li><li><span class="n">2</span><span>Kategorien &amp; Ordner umbenennen und neu anordnen – aus „Hauptgerichte“ wird z.&nbsp;B. „Vom Grill“.</span></li><li><span class="n">3</span><span>Eigene Fotos, eigene Rezepte, eigene Sprache – fertig ist dein eigenes Themen-Buch.</span></li></ol>'+'<div class="barpics reveal"><figure><img src="img/bar-backstube.jpg" alt="" loading="lazy" onerror="this.closest(\'figure\').style.display=\'none\'"><figcaption>So könnte deine Backstube aussehen – gleiche App, deine Inhalte.</figcaption></figure><figure><img src="img/bar-fruehstueck.jpg" alt="" loading="lazy" onerror="this.closest(\'figure\').style.display=\'none\'"><figcaption>… oder deine Frühstücksbar – Rezept für Rezept.</figcaption></figure></div>'+'<div class="secttitle reveal"><span class="bar"></span><div><h2>Für wen ist die App gemacht?</h2></div></div>'+
   audienceHTML()+
   '<div style="text-align:center;margin:20px 0 4px"><button class="btn pri lg" onclick="openApp()">📖 Jetzt ausprobieren</button></div>'+
   footerHTML();

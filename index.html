@@ -574,7 +574,9 @@ const h=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','
 function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('toasts').appendChild(t);
   setTimeout(()=>{t.style.transition='opacity .4s';t.style.opacity='0';setTimeout(()=>t.remove(),400);},2600);}
 function openApp(){window.open(APP_URL,'_blank','noopener');}
-/* Demo-Video-Raum: spielt assets/demo.webm (mp4 als Fallback-Slot) */
+/* Demo-Video-Raum: spielt assets/demo.webm (mp4 als Fallback-Slot).
+   Geschwindigkeit regulierbar (Klaus 2026-07-05): kleine Tempo-Knöpfe
+   oben rechts — 0,75× fürs Mitlesen, 1,5×/2× für den schnellen Überblick. */
 function playDemo(){
   const box=$('videoBox');if(!box||box._playing)return;
   const v=document.createElement('video');
@@ -583,7 +585,22 @@ function playDemo(){
   const webm=document.createElement('source');webm.src='assets/demo.webm';webm.type='video/webm';
   v.appendChild(mp4);v.appendChild(webm);
   v.onerror=()=>{toast('Demo-Video konnte nicht geladen werden.');};
-  box._playing=true;box.innerHTML='';box.appendChild(v);v.play().catch(()=>{});
+  box._playing=true;box.innerHTML='';box.appendChild(v);
+  const bar=document.createElement('div');
+  bar.style.cssText='position:absolute;top:10px;right:10px;z-index:6;display:flex;gap:6px';
+  [['0.75','0,75×'],['1','1×'],['1.5','1,5×'],['2','2×']].forEach(([rate,lbl])=>{
+    const b=document.createElement('button');
+    b.textContent=lbl;b.title='Abspielgeschwindigkeit '+lbl;
+    b.style.cssText='padding:5px 10px;border:none;border-radius:999px;font:700 .74rem/1 inherit;cursor:pointer;'+
+      'background:rgba(15,15,20,.62);color:#fff;backdrop-filter:blur(4px)';
+    if(rate==='1'){b.style.background='rgba(255,255,255,.92)';b.style.color='#222';}
+    b.onclick=e=>{e.stopPropagation();v.playbackRate=parseFloat(rate);
+      [...bar.children].forEach(c=>{c.style.background='rgba(15,15,20,.62)';c.style.color='#fff';});
+      b.style.background='rgba(255,255,255,.92)';b.style.color='#222';};
+    bar.appendChild(b);
+  });
+  box.appendChild(bar);
+  v.play().catch(()=>{});
 }
 
 /* ===== Navigation ===== */
@@ -764,11 +781,11 @@ function renderStart(){
     phoneHTML('ui-edit','Rezept bearbeiten','Zutaten, Schritte, Portionen')+
     phoneHTML('ui-planner','Menüplaner','Woche planen + Einkaufsliste')+
   '</div>'+
-  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Sieh die App in Aktion</h2><div class="sub">Kurzes Demo-Video</div></div></div>'+
+  '<div class="secttitle reveal"><span class="bar"></span><div><h2>Sieh die App in Aktion</h2><div class="sub">Großer Rundgang durch die App — gut 2½ Minuten, Tempo einstellbar</div></div></div>'+
   '<div class="videobox reveal" id="videoBox" onclick="playDemo()" data-tip="Demo-Video abspielen">'+
     '<img class="vposter" src="assets/demo-poster.jpg" alt="Demo · Mein Rezeptbuch" onerror="this.style.display=\'none\'">'+
     '<div class="vplay"><span>▶</span></div>'+
-    '<div class="vlabel"><b>Mein Rezeptbuch · Demo</b><small>Rezept scannen · Wochenplan · Food-Zine gestalten</small></div>'+
+    '<div class="vlabel"><b>Mein Rezeptbuch · Der große Rundgang</b><small>Rezept anlegen · Foto & Zuschnitt · Food-Zine · Wochenplan & Einkaufsliste · 8 Sprachen · KI-Scan</small></div>'+
   '</div>'+
   '<div class="secttitle reveal"><span class="bar"></span><div><h2>Beliebte Funktionen</h2><div class="sub">Tippen für Details</div></div></div>'+
   '<div class="sgrid" id="startGrid"></div>'+

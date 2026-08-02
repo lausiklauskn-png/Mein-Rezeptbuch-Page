@@ -28,6 +28,12 @@
 <meta property="og:url" content="https://lausiklauskn-png.github.io/Mein-Rezeptbuch-Page/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="icon-192.png">
+<!-- Das groesste Bild des ersten Eindrucks (Hero) wird per JavaScript eingesetzt.
+     Der Browser kann es beim Lesen des HTML deshalb gar nicht entdecken und faengt
+     erst spaet an zu laden (Lighthouse: "Anfrage ist im urspruenglichen Dokument
+     sichtbar"). Dieser Hinweis macht es frueh bekannt, ohne die Aufbau-Logik
+     umzustellen. -->
+<link rel="preload" as="image" href="img/dumplings.jpg" fetchpriority="high">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
 <script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
@@ -778,7 +784,7 @@ function renderStart(){
   const s=$('sc-start');
   s.innerHTML=
   '<div class="hero reveal">'+
-    '<div class="hph" data-slot="hero"><img src="img/dumplings.jpg" alt="" onerror="this.style.display=\'none\'"></div>'+
+    '<div class="hph" data-slot="hero"><img src="img/dumplings.jpg" alt="" fetchpriority="high" onerror="this.style.display=\'none\'"></div>'+
     '<div class="hscrim"></div>'+
     '<div class="hcont">'+
       '<span class="htag">Deine Rezepte · offline & mit KI</span>'+

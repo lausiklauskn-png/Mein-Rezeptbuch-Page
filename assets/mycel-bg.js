@@ -5,10 +5,21 @@
  * (--accent / --accent2 / --gold / --bg), damit der Hintergrund zu jedem der
  * Rezeptbuch-Themen passt. Aufruf: window.MycelBg.setTheme().
  */
-import * as THREE from 'three';
-
-const canvas = document.getElementById('bg');
-if (canvas) {
+/* three.js wird NACHGELADEN statt fest eingebunden (Lighthouse 2026-08-02).
+ * Vorher stand hier `import * as THREE from 'three'`. Dadurch hing die
+ * 165-KiB-Bibliothek in der kritischen Kette des Seitenaufbaus — sie war der
+ * laengste Pfad ueberhaupt (645 ms), obwohl sie fuer den ersten Eindruck der
+ * Seite nichts beitraegt.
+ *
+ * Jetzt startet der Hintergrund erst, wenn die Seite steht UND der Hauptfaden
+ * Luft hat. Sichtbar aendert sich nur, dass die Punkt-Wolke einen
+ * Wimpernschlag spaeter einsetzt. Schlaegt das Laden fehl, bleibt die Seite
+ * vollstaendig benutzbar — sie hat dann nur keinen bewegten Hintergrund.
+ */
+function mycelBgStarten(THREE) {
+  const canvas = document.getElementById('bg');
+  if (!canvas) return;
+  {
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isMobile = matchMedia('(max-width: 900px)').matches;
   const MAX_DPR = (window.matchMedia && matchMedia('(pointer: coarse)').matches) ? 1.5 : 2;
@@ -182,4 +193,17 @@ if (canvas) {
     requestAnimationFrame(tick);
   }
   if (reduce) renderOnce(); else requestAnimationFrame(tick);
+  }
 }
+
+/* Der Anstoss: nach "load", und dann erst, wenn der Hauptfaden frei ist. */
+(function () {
+  const los = () => import('three')
+    .then((m) => { mycelBgStarten(m); if (window.MycelBg) { try { window.MycelBg.setTheme(); } catch (_e) {} } })
+    .catch(() => {});
+  const gleich = () => (window.requestIdleCallback
+    ? requestIdleCallback(los, { timeout: 2000 })
+    : setTimeout(los, 200));
+  if (document.readyState === 'complete') gleich();
+  else window.addEventListener('load', gleich, { once: true });
+})();

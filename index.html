@@ -50,8 +50,19 @@
   /* Semantische Ableitung (gilt für ALLE Themes) */
   --accent:var(--br);--accent-d:var(--br2);--accent2:var(--rust);--accent3:var(--br3);
   --bg:var(--sand);--surface:var(--parch);--surface-2:var(--sand2);
-  --ink-2:color-mix(in srgb,var(--ink) 60%,var(--bg));
-  --ink-3:color-mix(in srgb,var(--ink) 40%,var(--bg));
+  /* Anteile ausgerechnet, nicht gegriffen (Klaus' Bericht 2026-08-08).
+   * Gemessen wurde in ALLEN ACHT Themen, gegen den Grund, auf dem der Text
+   * wirklich steht. Noetig fuer 4,5 : 1 war im schlechtesten Thema:
+   *   --ink-2  62 %  (default/spring/holo; night kam mit 52 % aus)
+   *   --ink-3  63 %  (default/spring/modern/holo)
+   * Vorher standen hier 60 % und 40 %. Die Folge: --ink-2 fiel in drei Themen
+   * durch (4,27-4,33), --ink-3 in ALLEN ACHT (2,38-3,22). Lighthouse sah davon
+   * nur eine Stelle, weil es nur das Standard-Thema misst.
+   * Gesetzt mit etwas Luft, und ink-2 bleibt der staerkere der beiden, damit
+   * die Abstufung erhalten bleibt. Alle 14 Verwendungen von --ink-3 sind Text
+   * (keine Rahmen, keine Dekoration) — fuer Text gilt 4,5 ohne Ausnahme. */
+  --ink-2:color-mix(in srgb,var(--ink) 68%,var(--bg));
+  --ink-3:color-mix(in srgb,var(--ink) 64%,var(--bg));
   --line:color-mix(in srgb,var(--ink) 13%,var(--surface));
   --accent-soft:color-mix(in srgb,var(--accent) 15%,var(--surface));
   --ok:var(--grn);--ok-soft:var(--grns);--warn:var(--gold);--danger:var(--rust);--danger-soft:var(--rusts);
@@ -1203,23 +1214,37 @@ if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.ser
 <style>
   .fp-badge-wrap{max-width:960px;margin:30px auto 18px;padding:0 16px;text-align:center;
     font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;}
+  /* KEIN @media (prefers-color-scheme) mehr, KEIN opacity (Klaus 2026-08-08,
+   * gleiche Aenderung wie an der Schwester-Seite Mein-Mixarium-Page).
+   *
+   * Der Block richtete sich nach dem BETRIEBSSYSTEM, die Seite nach ihrem
+   * EIGENEN Schalter (acht Themen ueber data-theme). Beide koennen sich
+   * widersprechen. Dazu druckte opacity:.78 den Fuss-Text auf 2,6 : 1 —
+   * opacity schlaegt jede Farbwahl darin.
+   *
+   * Jetzt folgt der Block den Farben der Seite und stimmt damit in jedem
+   * Thema. Beim Knopf wird --ink beigemischt: das ist per Definition die
+   * kontraststarke Farbe GEGEN den Grund, also zieht die Mischung in hellen
+   * Themen nach dunkel und in dunklen nach hell. Die Rueckfallwerte halten
+   * den Block fuer Forker brauchbar, die diese Variablen nicht haben.     */
   .fp-badge{display:inline-flex;align-items:center;gap:.5em;padding:7px 15px;
-    border-radius:999px;border:1px solid rgba(110,231,211,.38);color:#6ee7d3;
-    background:rgba(110,231,211,.06);font-size:.82rem;text-decoration:none;
+    border-radius:999px;border:1px solid currentColor;
+    /* 62 %, nicht mehr: im Thema "holo" (helles Lila #a78bfa auf fast Weiss)
+     * traegt hoechstens 65 % Akzent die geforderten 4,5 : 1. Ausgerechnet ueber
+     * alle acht Themen, nicht gegriffen. An der Schwester-Seite
+     * Mein-Mixarium-Page stehen 72 % — dort ist die Farbwelt eine andere, und
+     * der noetige Anteil haengt an der Palette, nicht an der Zahl.          */
+    color:color-mix(in srgb, var(--accent,#6ee7d3) 62%, var(--ink,#302010));
+    background:color-mix(in srgb, currentColor 8%, transparent);
+    font-size:.82rem;text-decoration:none;
     transition:background .18s ease,border-color .18s ease;}
-  .fp-badge:hover,.fp-badge:focus-visible{background:rgba(110,231,211,.15);
-    border-color:rgba(110,231,211,.72);outline:none;}
-  .fp-badge.fp-strong{background:rgba(110,231,211,.13);
-    border-color:rgba(110,231,211,.55);font-size:.86rem;padding:8px 17px;}
-  .fp-badge .fp-dot{width:7px;height:7px;border-radius:50%;background:#6ee7d3;
-    box-shadow:0 0 7px rgba(110,231,211,.85);flex:none;}
-  .fp-copy{margin-top:9px;font-size:.72rem;line-height:1.5;color:#9aa7b6;opacity:.78;}
-  @media (prefers-color-scheme: light){
-    .fp-badge{color:#0f766e;border-color:rgba(15,118,110,.35);background:rgba(15,118,110,.05);}
-    .fp-badge:hover,.fp-badge:focus-visible{background:rgba(15,118,110,.12);}
-    .fp-badge .fp-dot{background:#0f766e;box-shadow:0 0 7px rgba(15,118,110,.5);}
-    .fp-copy{color:#5b6b7a;}
-  }
+  .fp-badge:hover,.fp-badge:focus-visible{
+    background:color-mix(in srgb, currentColor 18%, transparent);outline:none;}
+  .fp-badge.fp-strong{background:color-mix(in srgb, currentColor 15%, transparent);
+    font-size:.86rem;padding:8px 17px;}
+  .fp-badge .fp-dot{width:7px;height:7px;border-radius:50%;background:currentColor;
+    box-shadow:0 0 7px currentColor;flex:none;}
+  .fp-copy{margin-top:9px;font-size:.72rem;line-height:1.5;color:var(--ink-2,#9aa7b6);}
 </style>
 <div class="fp-badge-wrap">
   <a class="fp-badge" href="https://family-projekt.de" target="_blank" rel="noopener"

@@ -102,14 +102,84 @@
     });
   }
 
-  function apply(root) {
-    wireHolo();
+  /* ---- 3) Zugang: der Bild-Tausch ist ein WERKZEUG, kein Angebot ----
+   * Klaus' Befund 2026-08-08: an jedem Bild hing ein 📷-Knopf, und ein Klick
+   * auf die Handy-Bilder oeffnete ein Datei-Fenster. Das ist Werkzeug aus der
+   * Bauphase — fuer einen Besucher sinnlos und verwirrend, und es kostet bei
+   * JEDEM Seitenaufbau Arbeit: sieben Knoepfe anlegen, sieben Dropzonen
+   * verdrahten, sieben Speicher-Abfragen (gemessen 47 · 47 · 43 mit gegen
+   * 48 · 48 · 46 ohne).
+   *
+   * Klaus' Anweisung: "nur wenn ich diesen Knopf druecke, soll das geladen
+   * werden" — also derselbe Griff wie im Studio von family-projekt.de:
+   * 1,5 s Druck auf die ©-Zeile im Fuss (dort assets/studio-markt.js
+   * wireAccess). Zehn Pixel Wackeln sind erlaubt, damit Scrollen den Griff
+   * nicht ausloest.
+   *
+   * Im gesperrten Zustand wird NICHTS verdrahtet und auch kein gespeichertes
+   * Bild eingesetzt — sonst saehe Klaus eine andere Seite als jeder Besucher.
+   * Die gespeicherten Bilder bleiben liegen; ein Langdruck holt sie zurueck. */
+  var LS_MODUS = 'rb-bearbeiten';
+  function istOffen() { try { return localStorage.getItem(LS_MODUS) === '1'; } catch (_e) { return false; } }
+
+  function oeffnen() {
+    try { localStorage.setItem(LS_MODUS, '1'); } catch (_e) {}
+    document.body.classList.add('rb-bearbeiten');
+    slotsVerdrahten(document);
+    toast('Bild-Werkzeug an — 📷 an jedem Bild. Nochmal lang druecken schaltet es aus.');
+  }
+  function schliessen() {
+    try { localStorage.setItem(LS_MODUS, '0'); } catch (_e) {}
+    document.body.classList.remove('rb-bearbeiten');
+    document.querySelectorAll('.slot-edit').forEach(function (b) { b.remove(); });
+    document.querySelectorAll('.dropzone').forEach(function (el) { el.classList.remove('dropzone'); });
+    toast('Bild-Werkzeug aus.');
+  }
+
+  function wireZugang() {
+    if (wireZugang._done) return;
+    var trig = null, kandidaten = document.querySelectorAll('footer .wrap, .fp-copy, footer');
+    for (var i = 0; i < kandidaten.length; i++) {
+      if (/©/.test(kandidaten[i].textContent || '')) { trig = kandidaten[i]; break; }
+    }
+    /* Noch nicht da? Die ©-Zeile steht im Dokument HINTER dem Skript, das sie
+     * sucht — beim ersten apply() existiert sie also gar nicht. Deshalb erst
+     * abhaken, wenn sie wirklich gefunden wurde, und spaeter nochmal nachsehen. */
+    if (!trig) {
+      if (!wireZugang._wartet) {
+        wireZugang._wartet = true;
+        document.addEventListener('DOMContentLoaded', wireZugang, { once: true });
+        window.addEventListener('load', wireZugang, { once: true });
+      }
+      return;                                // fail-soft: ohne Fuss passiert nichts
+    }
+    wireZugang._done = true;
+    var timer = null, sx = 0, sy = 0;
+    var clear = function () { if (timer) { clearTimeout(timer); timer = null; } };
+    trig.addEventListener('pointerdown', function (e) {
+      sx = e.clientX; sy = e.clientY; clear();
+      timer = setTimeout(function () { timer = null; istOffen() ? schliessen() : oeffnen(); }, 1500);
+    });
+    trig.addEventListener('pointermove', function (e) {
+      if (timer && (Math.abs(e.clientX - sx) > 10 || Math.abs(e.clientY - sy) > 10)) clear();
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { trig.addEventListener(ev, clear); });
+  }
+
+  function slotsVerdrahten(root) {
     (root || document).querySelectorAll('[data-slot]').forEach(function (el) {
       var slot = el.getAttribute('data-slot');
       var d = load(slot);
       if (d) setImg(el, d);
       wireSlot(el, slot);
     });
+  }
+
+  function apply(root) {
+    wireHolo();
+    wireZugang();
+    if (!istOffen()) return;                 // Regelfall: nichts weiter zu tun
+    slotsVerdrahten(root);
   }
 
   global.RBImg = { apply: apply };

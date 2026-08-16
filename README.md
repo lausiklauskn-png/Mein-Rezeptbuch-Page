@@ -55,3 +55,11 @@ python3 -m http.server 8099
 
 Diese Seite ist **noch nicht** auf familyproject.de veröffentlicht – sie liegt als Entwurf/Beispiel
 im Repo. Geplanter Einsatz: verlinktes Beispiel im Family-Project.
+
+---
+
+## Rechte
+
+Rechteinhaber ist Klaus Nitzsche. Welche Lizenz gilt und welche Rolle die
+KI-Werkzeuge hatten, steht in [`RECHTE.md`](RECHTE.md); der Lizenztext in
+[`LICENSE`](LICENSE).

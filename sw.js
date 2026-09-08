@@ -2,6 +2,15 @@
    Cache-Name als Versionsstempel: bei jeder Auslieferung +1.
    HTML = Network-First (frische Seite, sonst Cache), Assets = Cache-First. */
 const CACHE = 'rezeptbuch-page-v15';
+
+/* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
+ * Pfad. Auf lausiklauskn-png.github.io liegen rund zwanzig Apps; ein Filter,
+ * der nur "ist nicht meiner" fragt, laesst ALLE fremden durch und loescht sie.
+ * Gemessen am 2026-09-08 an zwei echten Apps
+ * (Sage-Protokol/tests/vorrat_wirkung.mjs). Praefix ABGELESEN aus der
+ * Vorrat-Konstante, nicht geraten. Muster aus Tomys-Hub/bookledger/sw.js.
+ * Es muss BEIDES tun: fremde stehen lassen UND eigene alte weiter wegraeumen. */
+const VORRAT_PRAEFIX = "rezeptbuch-page-";
 const ASSETS = [
   './', 'index.html', 'impressum.html', 'effects.js', 'manifest.webmanifest',
   'assets/mycel-bg.js', 'vendor/three.module.min.js',
@@ -25,7 +34,7 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys()
-      .then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(ks => Promise.all(ks.filter(k => k.startsWith(VORRAT_PRAEFIX) && k !== CACHE).map(k => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });

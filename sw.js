@@ -1,7 +1,7 @@
 /* Mein Rezeptbuch · Landingpage — Service Worker (Offline + Installierbarkeit)
    Cache-Name als Versionsstempel: bei jeder Auslieferung +1.
    HTML = Network-First (frische Seite, sonst Cache), Assets = Cache-First. */
-const CACHE = 'rezeptbuch-page-v15';
+const CACHE = 'rezeptbuch-page-v16';
 
 /* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
  * Pfad. Auf lausiklauskn-png.github.io liegen rund zwanzig Apps; ein Filter,

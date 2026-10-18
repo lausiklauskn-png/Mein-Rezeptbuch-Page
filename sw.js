@@ -1,7 +1,7 @@
 /* Mein Rezeptbuch · Landingpage — Service Worker (Offline + Installierbarkeit)
    Cache-Name als Versionsstempel: bei jeder Auslieferung +1.
    HTML = Network-First (frische Seite, sonst Cache), Assets = Cache-First. */
-const CACHE = 'rezeptbuch-page-v16';
+const CACHE = 'rezeptbuch-page-v17';
 
 /* ⚠ NUR EIGENE VORRAETE AUFRAEUMEN — `caches` gehoert dem URSPRUNG, nicht dem
  * Pfad. Auf lausiklauskn-png.github.io liegen rund zwanzig Apps; ein Filter,
@@ -12,7 +12,7 @@ const CACHE = 'rezeptbuch-page-v16';
  * Es muss BEIDES tun: fremde stehen lassen UND eigene alte weiter wegraeumen. */
 const VORRAT_PRAEFIX = "rezeptbuch-page-";
 const ASSETS = [
-  './', 'index.html', 'impressum.html', 'effects.js', 'manifest.webmanifest',
+  './', 'index.html', 'assets/installieren.js?v=1', 'impressum.html', 'effects.js', 'manifest.webmanifest',
   'assets/mycel-bg.js', 'vendor/three.module.min.js',
   'icon-192.png', 'icon-512.png', 'icon-512-maskable.png', 'assets/book-emblem.png', 'assets/demo-poster.jpg',
   /* demo.webm/.mp4 bewusst NICHT precachen (~23 MB) — laden bei Klick in den Laufzeit-Cache */

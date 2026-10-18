@@ -120,6 +120,7 @@ a{color:var(--accent)}
 .iconbtn{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);width:42px;height:42px;border-radius:12px;
   font-size:19px;cursor:pointer;display:grid;place-items:center;transition:transform .12s,background .15s;text-decoration:none}
 .iconbtn:hover{background:var(--accent-soft)}
+#installieren .t{display:none} /* Knopf „Installieren“ (2026-10-18): nur ⬇, wie die übrigen Symbol-Knöpfe */
 .iconbtn:active{transform:scale(1.18)}
 
 /* ---- Desktop top-nav ---- */
@@ -1175,7 +1176,8 @@ function bindTips(root){
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;
   if(!localStorage.getItem('rb-install-x'))$('installBar').classList.add('on');});
-function installApp(){if(!deferredPrompt){toast('Über das Browser-Menü „Zum Startbildschirm hinzufügen".');return;}
+function installApp(){var k=document.getElementById('installieren');if(k){$('installBar').classList.remove('on');k.click();return;}
+  if(!deferredPrompt){toast('Über das Browser-Menü „Zum Startbildschirm hinzufügen".');return;}
   deferredPrompt.prompt();deferredPrompt.userChoice.finally(()=>{deferredPrompt=null;$('installBar').classList.remove('on');});}
 function dismissInstall(){$('installBar').classList.remove('on');localStorage.setItem('rb-install-x','1');}
 window.addEventListener('appinstalled',()=>{$('installBar').classList.remove('on');toast('Installiert – viel Freude beim Kochen!');});
@@ -1253,5 +1255,8 @@ if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.ser
   </a>
   <div class="fp-copy">&copy; 2026 Klaus Nitzsche &middot; kostenlos, ohne Konto, offline nutzbar</div>
 </div>
+<!-- Knopf „Installieren“ (Klaus 2026-10-18): byte-1:1 aus Sage, fest in der Kopfleiste, verschwindet als App.
+     Die Leiste unten bleibt ein Hinweis; ihr Knopf tippt diesen an. -->
+<script src="assets/installieren.js?v=1" data-name="Mein Rezeptbuch" data-vor="tbDark" defer></script>
 </body>
 </html>
